@@ -1,0 +1,6 @@
+rootProject.name = 'ClickMapActivity'
+include 'ClickMapActivity-model'
+include 'ClickMapActivity-service'
+include 'ClickMapActivity-repo'
+include 'ClickMapActivity-web'
+
