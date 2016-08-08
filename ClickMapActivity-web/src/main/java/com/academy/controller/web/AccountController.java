@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AccountController {
 
-    @RequestMapping
+    @RequestMapping("/index")
     public String index() {
         return "Test Spring Boot";
     }

@@ -19,6 +19,7 @@ public class Account {
     private String surName;
     private String phoneNumber;
     private String email;
+    private String website;
 
     public Long getId() {
         return id;
@@ -74,5 +75,13 @@ public class Account {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }
