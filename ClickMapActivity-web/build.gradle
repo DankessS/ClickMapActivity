@@ -12,10 +12,16 @@ repositories {
 
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.0.M9'
+    compile("org.springframework.boot:spring-boot-starter-web"){
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.security:spring-security-config")
+    compile("org.springframework.boot:spring-boot-starter-websocket")
+    compile ("org.apache.tomcat.embed:tomcat-embed-websocket")
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '1.4.0.RELEASE'
-    compile("org.springframework.boot:spring-boot-starter-jetty")
-    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("mysql:mysql-connector-java")
+    compile project(':ClickMapActivity-model')
+    compile project(':ClickMapActivity-repo')
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

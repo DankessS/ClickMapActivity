@@ -1,8 +1,10 @@
-package com.academy.dbo;
+package com.academy.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
  * Created by DankessS on 2016-08-04.
@@ -19,7 +21,9 @@ public class Account {
     private String surName;
     private String phoneNumber;
     private String email;
-    private String website;
+
+    @OneToMany(mappedBy = "account")
+    private List<Website> websites;
 
     public Long getId() {
         return id;
@@ -77,11 +81,11 @@ public class Account {
         this.email = email;
     }
 
-    public String getWebsite() {
-        return website;
+    public List<Website> getWebsites() {
+        return websites;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setWebsites(List<Website> websites) {
+        this.websites = websites;
     }
 }
