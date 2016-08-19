@@ -15,7 +15,7 @@ public class Account {
     @Id
     @GeneratedValue
     private Long id;
-    private String username;
+    private String userName;
     private String password;
     private String firstName;
     private String surName;
@@ -33,12 +33,12 @@ public class Account {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
