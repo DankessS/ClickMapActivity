@@ -14,7 +14,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/js/");
         registry.addResourceHandler("/templates/**").addResourceLocations("classpath:/templates/");
-        registry.addResourceHandler("/image/**").addResourceLocations("classpath:/image/");
+        registry.addResourceHandler("/img/**").addResourceLocations("classpath:/img/");
         registry.addResourceHandler("/**").addResourceLocations("classpath:/templates/");
         registry.addResourceHandler("/angular/**").addResourceLocations("classpath:/js/angular/");
         registry.addResourceHandler("/bootstrap/**").addResourceLocations("classpath:/js/bootstrap/");
