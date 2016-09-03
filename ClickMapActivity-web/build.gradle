@@ -15,12 +15,12 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web"){
         exclude module: "spring-boot-starter-tomcat"
     }
-    compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("org.springframework.security:spring-security-config")
-    compile("org.springframework.boot:spring-boot-starter-websocket")
+    compile ("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile ("org.springframework.security:spring-security-config")
+    compile ("org.springframework.boot:spring-boot-starter-websocket")
     compile ("org.apache.tomcat.embed:tomcat-embed-websocket")
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '1.4.0.RELEASE'
-    compile("mysql:mysql-connector-java")
+    compile ("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile ("mysql:mysql-connector-java")
     compile project(':ClickMapActivity-model')
     compile project(':ClickMapActivity-repo')
     testCompile group: 'junit', name: 'junit', version: '4.11'
