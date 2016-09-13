@@ -14,4 +14,9 @@ public class Controller {
     public ModelAndView index(){
         return new ModelAndView("public/index");
     }
+
+    @RequestMapping("/user/")
+    public ModelAndView getUserIndex() {
+        return new ModelAndView("user/userIndex");
+    }
 }

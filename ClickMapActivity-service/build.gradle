@@ -1,18 +1,10 @@
 group 'com.academy.engineer'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
-apply plugin: 'spring-boot'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-security")
     compile project(':ClickMapActivity-model')
     compile project(':ClickMapActivity-repo')
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'com.hazelcast:hazelcast:3.7.1'
 }
