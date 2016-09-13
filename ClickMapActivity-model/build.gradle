@@ -1,17 +1,6 @@
 group 'com.academy.engineer'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
-apply plugin: 'spring-boot'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.2.1.Final'
-    testCompile group: 'junit', name: 'junit', version: '4.11'
 }

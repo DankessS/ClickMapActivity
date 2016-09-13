@@ -27,7 +27,7 @@
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>-->
     <!--End global repo-->
 
-    <script type="text/javascript" th:src="@{/js/public/routeProvider.js}"/>
+    <script type="text/javascript" th:src="@{/js/user/userRouteProvider.js}"/>
     <script type="text/javascript" th:src="@{/js/public/indexServices.js}"/>
     <script type="text/javascript" th:src="@{/js/public/indexControllers.js}"/>
     <script type="text/javascript" th:src="@{/js/public/accountControllers.js}"/>
@@ -173,55 +173,49 @@
     </script>
 </head>
 <body>
-    <div data-spy="affix" id="menu">
-        <div id="thin-bar" role="navigation"></div>
-        <nav class="navbar navbar-default" id="main-navbar" role="navigation">
-            <div class="collapse navbar-collapse">
-                <div class="container-fluid" id="navbar-items">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="http://localhost:8080">ClickMapActivity</a>
-                    </div>
-                    <ul class="nav navbar-nav navbar-right" id="menuItems">
-                        <li><a href="#main" id="startMenuOpt">START</a>
-                            <div></div>
-                        </li>
-                        <li><a href="#">SUPPORT</a>
-                            <div></div>
-                        </li>
-                        <li><a href="#">CONTACT</a>
-                            <div></div>
-                        </li>
-                        <li><a href="#register"> SIGN UP</a>
-                            <div></div>
-                        </li>
-                        <li class="dropdown" id="menuLogin">
-                            <a class="dropdown-toggle" href="" data-toggle="dropdown" id="navLogin"><span
-                                    class="glyphicon glyphicon-log-in"></span> LOGIN
-                            </a>
-                            <div></div>
-                            <ul class="dropdown-menu" id="loginBar">
-                                <form class="form-group" id="formLogin" action="/login" method="POST">
-                                    <input name="username" class="form-control" id="username" type="text"
-                                           placeholder="Username" ng-model="user.username"></input><br></br>
-                                    <input name="password" class="form-control" id="password" type="password"
-                                           placeholder="Password" ng-model="user.password"></input><br></br>
-                                    <button type="submit" id="btnLogin" class="btn btn-primary">LOGIN</button>
-                                </form>
-                            </ul>
-                        </li>
-                    </ul>
+<div data-spy="affix" id="menu">
+    <div id="thin-bar" role="navigation"></div>
+    <nav class="navbar navbar-default" id="main-navbar" role="navigation">
+        <div class="collapse navbar-collapse">
+            <div class="container-fluid" id="navbar-items">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://localhost:8080/user/#">ClickMapActivity</a>
                 </div>
+                <ul class="nav navbar-nav navbar-right" id="menuItems">
+                    <li><a href="#main" id="startMenuOpt">START</a>
+                        <div></div>
+                    </li>
+                    <li><a href="#">SUPPORT</a>
+                        <div></div>
+                    </li>
+                    <li><a href="#">CONTACT</a>
+                        <div></div>
+                    </li>
+                    <li><a href="#register"> SIGN UP</a>
+                        <div></div>
+                    </li>
+                    <li class="dropdown" id="menuLogin">
+                        <a class="dropdown-toggle" href="" data-toggle="dropdown" id="navLogin" ng-controller="IndexController" ><span
+                                class="glyphicon glyphicon-log-in"></span> Hi, {{username}}
+                        </a>
+                        <div></div>
+                        <ul class="dropdown-menu" id="loginBar" ng-controller="IndexController">
+                            <li ng-click="logout()"><a>LOGOUT</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </div>
-    <br></br>
-    <br></br>
-    <br></br>
-    <div ng-view="true"></div>
+        </div>
+    </nav>
+</div>
+<br></br>
+<br></br>
+<br></br>
+<div ng-view="true"></div>
 </body>
 </html>

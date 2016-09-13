@@ -1,5 +1,6 @@
 package com.academy.service.mappers;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -13,10 +14,10 @@ public interface Mapper<DAO,DTO> {
     DTO convertToDTO(DAO dao);
 
     default Iterable<DAO> convertToDAO(Iterable<DTO> dto) {
-        return Stream.of(dto).map(this::convertToDAO).collect(Collectors.toList());
+        return Stream.of(dto).map(m -> (DAO)convertToDAO(m)).collect(Collectors.toList());
     }
 
     default Iterable<DTO> convertToDTO(Iterable<DAO> dao) {
-        return Stream.of(dao).map(this::convertToDTO).collect(Collectors.toList());
+        return Stream.of(dao).map(m -> (DTO)convertToDTO(m)).collect(Collectors.toList());
     }
 }
