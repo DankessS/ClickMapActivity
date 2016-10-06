@@ -15,6 +15,10 @@
     <link rel="styleSheet" th:href="@{/js/bower_components/angular-ui-grid/ui-grid.min.css}"/>
     <script th:src="@{/js/bower_components/angular-ui-grid/ui-grid.js}"></script>
     <script th:src="@{/js/bower_components/angular-animate/angular-animate.min.js}" ></script>
+    <link rel="stylesheet" th:href="@{/js/bower_components/angularjs-toaster/toaster.min.css}"/>
+    <script th:src="@{/js/bower_components/angularjs-toaster/toaster.min.js}"></script>
+    <link rel="stylesheet" media='all' th:href="@{/js/bower_components/angular-loading-bar/build/loading-bar.min.css}"/>
+    <script th:src="@{/js/bower_components/angular-loading-bar/build/loading-bar.min.js}"></script>
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>-->
     <!--End local repo -->
     <!--Global repo-->
@@ -134,6 +138,7 @@
         }
 
         #loginBar {
+            left: -16%;
             height: 260%;
             line-height: 75%;
             padding: 27px;

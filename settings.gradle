@@ -3,4 +3,7 @@ include 'ClickMapActivity-model'
 include 'ClickMapActivity-service'
 include 'ClickMapActivity-repo'
 include 'ClickMapActivity-web'
+include 'ClickMapActivity-cache'
+include 'ClickMapActivity-cache'
+include 'ClickMapActivity-cache'
 

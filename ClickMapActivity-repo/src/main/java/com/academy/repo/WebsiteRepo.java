@@ -7,4 +7,7 @@ import org.springframework.data.repository.CrudRepository;
  * Created by Daniel Palonek on 2016-08-19.
  */
 public interface WebsiteRepo extends CrudRepository<Website, Long> {
+    Iterable<Website> findByAccountId(Long accountId);
+    void deleteById(Long websiteId);
+
 }

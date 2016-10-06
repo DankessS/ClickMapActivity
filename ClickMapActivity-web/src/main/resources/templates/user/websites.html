@@ -1,0 +1,125 @@
+<style>
+    .desc {
+        font-size: 1.2em;
+        font-family: Verdana, Geneva, sans-serif;
+    }
+
+    #base {
+        padding-left: 20%;
+        text-align: left;
+        width: 80%;
+    }
+
+    h1 {
+        font-family: Verdana, Geneva, sans-serif;
+    }
+
+    .well-text {
+        display: inline;
+        padding: 1%;
+    }
+
+    .delete-btn {
+        display: inline;
+        float:right;
+        padding-right:1%;
+        padding-bottom: 1%;
+    }
+
+    .well-text:focus, :hover {
+        color: #5e5e5e;
+    }
+
+    #dropdown-well, #websites-well {
+        width: 100%;
+        color: white;
+        background-color: #7a43b6;
+        border-color: #7a43b6;
+        font-family: Verdana, Geneva, sans-serif;
+        font-size: 1.4em;
+        text-align: left;
+        padding:1%;
+    }
+
+    .dropdown-menu {
+        width: 100%;
+        border-color:#7a43b6;
+        padding: 3%;
+    }
+
+    #addButton, #url {
+        display: inline;
+    }
+
+    #addButton {
+        background-color: #7a43b6;
+        border-color: #7a43b6;
+        margin-left:4%;
+    }
+
+    .form-group {
+        padding-top:1%;
+    }
+
+    #addWebsite-dropdown {
+        margin-top: 5%;
+    }
+</style>
+<div id="base">
+    <br></br>
+    <br></br>
+    <h1>Your websites</h1>
+    <br></br>
+    <p class="desc">Here you can add website url, which you want to be scanned with our activity system.
+        If you have already existing websites here, you can preview them and check their's subpages.</p>
+    <br></br>
+    <br></br>
+
+    <div ng-repeat="w in userWebsites">
+        <div class="well well-nm" id="websites-well">
+            <p class="well-text"><span class="glyphicon glyphicon-th"></span></p>
+            <p class="well-text">{{w.url}}</p>
+            <p class="delete-btn">
+                <span class ="glyphicon glyphicon-remove" data-toggle="tooltip" title="Delete website" ng-click="deleteWebsite(w)"></span>
+            </p>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+    <div class="dropdown" id="addWebsite-dropdown">
+        <button class="btn btn-primary dropdown-toggle" id="dropdown-well" data-toggle="dropdown">
+            <p class="well-text"><span class="glyphicon glyphicon-plus" style="font-size:1.4em;"></span></p>
+            <p class="well-text" style="">Add your new website</p>
+        </button>
+        <div class="dropdown-menu">
+            <form class="form-group" ng-submit = "addWebsite()">
+                <label for="url">Website address:</label>
+                <input type="text" class="form-control" id="url" style="width:30%" ng-model="websiteUrl" required>
+                <button type="submit" id="addButton" class="btn btn-primary">ADD</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+                <div class="modal-body">
+                    <p>After remove your page all statistics will loose. Do you want to remove page?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-defauld" data-ng-click="deleteWebsite(true)">Yes</button>
+                    <button type="button" class="btn btn-default" data-ng-click="deleteWebsite(false)">No</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

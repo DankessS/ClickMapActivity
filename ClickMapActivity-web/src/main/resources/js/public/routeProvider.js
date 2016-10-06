@@ -1,7 +1,7 @@
 /**
  * Created by Daniel Palonek on 2016-09-05.
  */
-var mainApp = angular.module("mainApp", ['ngRoute', 'ngAnimate', 'ui.grid.pagination', 'IndexServices', 'IndexControllers', 'AccountServices', 'AccountControllers']);
+var mainApp = angular.module("mainApp", ['ngRoute', 'ngAnimate', 'ui.grid.pagination','angular-loading-bar', 'IndexServices', 'IndexControllers', 'AccountServices', 'AccountControllers']);
 
 mainApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.

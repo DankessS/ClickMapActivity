@@ -1,6 +1,6 @@
-package com.academy.web.config.cache;
+package com.academy.web.config;
 
-import com.hazelcast.core.HazelcastInstance;
+import com.academy.cache.UserCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -18,11 +18,12 @@ import java.io.IOException;
 public class LogoutAuthenticationSuccessHandler implements LogoutSuccessHandler {
 
     @Autowired
-    HazelcastInstance hazelcastInstance;
+    UserCache cache;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse rsp, Authentication auth)
             throws IOException, ServletException {
-        hazelcastInstance.getUserContext().remove(CacheConstants.LOGGED_USERNAME);
+        cache.removeLoggedUsername();
+        cache.removeUserWebsites();
     }
 }

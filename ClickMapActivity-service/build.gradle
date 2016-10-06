@@ -6,5 +6,6 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile project(':ClickMapActivity-model')
     compile project(':ClickMapActivity-repo')
+    compile project(':ClickMapActivity-cache')
     compile 'com.hazelcast:hazelcast:3.7.1'
 }

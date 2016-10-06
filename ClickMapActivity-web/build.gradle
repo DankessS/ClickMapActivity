@@ -11,5 +11,6 @@ dependencies {
     compile project(':ClickMapActivity-model')
     compile project(':ClickMapActivity-repo')
     compile project(':ClickMapActivity-service')
+    compile project(':ClickMapActivity-cache')
     compile 'com.hazelcast:hazelcast:3.7.1'
 }

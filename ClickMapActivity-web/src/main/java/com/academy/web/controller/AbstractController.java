@@ -40,8 +40,8 @@ abstract public class AbstractController<DAO, DTO, S extends AbstractService<DAO
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public void delete(@RequestBody DTO modelToDelete, @PathVariable int id) {
-        service.delete(modelToDelete);
+    public void delete(@RequestBody DTO model, @PathVariable int id) {
+        service.delete(model);
     }
 
     @RequestMapping(value = "/delete/all", method = RequestMethod.POST)
