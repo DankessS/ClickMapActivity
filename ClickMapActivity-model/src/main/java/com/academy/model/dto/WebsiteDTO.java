@@ -1,9 +1,11 @@
 package com.academy.model.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by Daniel Palonek on 2016-08-18.
  */
-public class WebsiteDTO {
+public class WebsiteDTO implements Serializable {
 
     private Long id;
     private String url;

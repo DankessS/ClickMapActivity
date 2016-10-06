@@ -5,10 +5,12 @@ import com.academy.model.dao.Website;
 import com.academy.model.dto.WebsiteDTO;
 import com.academy.repo.AccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Daniel Palonek on 2016-08-18.
  */
+@Component
 public class WebsiteMapper implements Mapper<Website,WebsiteDTO> {
 
     @Autowired

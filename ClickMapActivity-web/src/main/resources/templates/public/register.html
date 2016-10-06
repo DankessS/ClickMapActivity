@@ -9,7 +9,7 @@
         margin: 0 auto;
         border-radius: 10px;
         border: solid 2px #7a43b6;
-        padding-left: 6%;
+        padding-left: 1%;
         padding-top: 2%;
         padding-bottom: 2%;
     }
@@ -24,37 +24,89 @@
     #btnRegister:active, #btnRegister:hover, #btnRegister:focus {
         border-color: white;
     }
+
+    #username-fail, #password-fail, #firstName-fail, #surname-fail {
+        color: red;
+    }
+
+    #username-ok, #password-ok, #firstName-ok, #surname-ok, #phone-ok {
+        color: green;
+    }
+
 </style>
 
 <br></br>
 <br></br>
 <br></br>
 <div class="container" id="register-form">
-    <form method="post" action="account/register">
+    <toaster-container toaster-options = "{
+        'position-class':'toast-bottom-center',
+        'timeOut': '4000',
+        'prevent-duplicates': true,
+        'showDuration': '200',
+        'hideDuration': '1000'
+    }"></toaster-container>
+    <form name="registerForm" ng-submit="register()">
         <div class="form-group">
-            <label for="usr">Userame:</label>
-            <input type="text" class="form-control" id="usr" name="username" ng-change="checkIfExist(username)" required>
-        </div>
-        <div class="form-group">
-            <label for="pwd">Password:</label>
-            <input type="password" class="form-control" id="pwd" name="password" required>
-        </div>
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" name="firstName" required>
-        </div>
-        <div class="form-group">
-            <label for="surname">Surname:</label>
-            <input type="text" class="form-control" id="surname" name="surname" required>
-        </div>
-        <div class="form-group">
-            <label for="phone">Phone number:</label>
-            <input type="tel" class="form-control" id="phone" name="phone" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-        </div>
-        <button type="submit" id ="btnRegister" class="btn btn-default">REGISTER</button>
+            <label for="usr">*Userame:</label>
+            <input type="text" class="form-control" id="usr" name="username" ng-model="username"
+                   ng-change="checkUsernameValidate()" required>
+            <div id="username-fail">
+                <span ng-show="isUserNameExisted" class="glyphicon glyphicon-remove">Username already exists. Please type different.</span>
+                <span ng-show="isUserNameTooLong" class="glyphicon glyphicon-remove">Username is too long. It should has maximum 10 characters.</span>
+                <span ng-show="isUsernameInvalidFormat" class="glyphicon glyphicon-remove">Wrong characters in username.</span>
+            </div>
+            <div id="username-ok">
+                <span ng-show="!isUserNameInvalidFormat && !isUserNameTooLong && !isUserNameExisted && !firstEmpty" class="glyphicon glyphicon-ok"></span>
+            </div>
+            <div class="form-group">
+                <label for="pwd">*Password:</label>
+                <input type="password" class="form-control" id="pwd" name="password" ng-model="password" ng-change="checkPasswordValidate()" required>
+                <div id="password-fail">
+                    <span ng-show="isPasswordTooLong" class="glyphicon glyphicon-remove">Password is too long. It should has maximum 20 characters.</span>
+                </div>
+                <div id="password-ok">
+                    <span ng-show="!isPasswordTooLong && !secondEmpty" class="glyphicon glyphicon-ok"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="firstName">*Name:</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" ng-model="firstName" ng-change="checkFirstNameValidate()" required>
+                <div id="firstName-fail">
+                    <span ng-show="isFirstNameTooLong" class="glyphicon glyphicon-remove">First name is too long. It should has maximum 15 characters.</span>
+                    <span ng-show="isFirstNameInvalidFormat" class="glyphicon glyphicon-remove">Wrong characters in first name.</span>
+                </div>
+                <div id="firstName-ok">
+                    <span ng-show="!isFirstNameInvalidFormat && !isFirstNameTooLong && !thirdEmpty" class="glyphicon glyphicon-ok"></span>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label for="surname">*Surname:</label>
+                <input type="text" class="form-control" id="surname" name="surname" ng-model="surname" ng-change="checkSurnameValidate()" required>
+                <div id="surname-fail">
+                    <span ng-show="isSurnameTooLong" class="glyphicon glyphicon-remove">First name is too long. It should has maximum 15 characters.</span>
+                    <span ng-show="isSurnameInvalidFormat" class="glyphicon glyphicon-remove">Wrong characters in first name.</span>
+                </div>
+                <div id="surname-ok">
+                    <span ng-show="!isSurnameInvalidFormat && !isSurnameTooLong && !fourthEmpty" class="glyphicon glyphicon-ok"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone number:</label>
+                <input type="tel" class="form-control" id="phone" name="phone" ng-model="phone" ng-change="checkPhoneValidate()">
+                <div id="phone-ok">
+                    <span ng-show="!isPhoneInvalidFormat" class="glyphicon glyphicon-ok"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">*Email:</label>
+                <input type="email" class="form-control" id="email" name="email" ng-model="email" required>
+            </div>
+            <div style="display:inline-block">
+                <button type="submit" id="btnRegister" class="btn btn-default">REGISTER</button>
+                <br></br>
+                <span>* required</span>
+            </div>
     </form>
 </div>

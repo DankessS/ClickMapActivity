@@ -8,7 +8,7 @@ indexControllers.controller('IndexController', ['$scope', '$location', 'IndexSer
     IndexService.getLoggedUsername(function (username) {
        if(username.value !== null) {
            $scope.username = username.value;
-       } 
+       }
     });
 
     $scope.logout = function() {
@@ -19,5 +19,5 @@ indexControllers.controller('IndexController', ['$scope', '$location', 'IndexSer
                 }
             });
         });
-    }
+    };
 }]);

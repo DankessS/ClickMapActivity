@@ -9,12 +9,17 @@
     <script th:src="@{/js/bower_components/angular/angular.min.js}"></script>
     <script th:src="@{/js/bower_components/angular-route/angular-route.min.js}"></script>
     <script th:src="@{/js/bower_components/angular-resource/angular-resource.min.js}"></script>
+
     <link rel="stylesheet" th:href="@{/js/bower_components/bootstrap/dist/css/bootstrap.min.css}"/>
     <script th:src="@{/js/bower_components/jquery/dist/jquery.min.js}"></script>
     <script th:src="@{/js/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
     <link rel="styleSheet" th:href="@{/js/bower_components/angular-ui-grid/ui-grid.min.css}"/>
     <script th:src="@{/js/bower_components/angular-ui-grid/ui-grid.js}"></script>
     <script th:src="@{/js/bower_components/angular-animate/angular-animate.min.js}" ></script>
+    <link rel="stylesheet" th:href="@{/js/bower_components/angularjs-toaster/toaster.min.css}"/>
+    <script th:src="@{/js/bower_components/angularjs-toaster/toaster.min.js}"></script>
+    <link rel="stylesheet" media='all' th:href="@{/js/bower_components/angular-loading-bar/build/loading-bar.min.css}"/>
+    <script th:src="@{/js/bower_components/angular-loading-bar/build/loading-bar.min.js}"></script>
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>-->
     <!--End local repo -->
     <!--Global repo-->
@@ -28,6 +33,8 @@
     <!--End global repo-->
 
     <script type="text/javascript" th:src="@{/js/user/userRouteProvider.js}"/>
+    <script type="text/javascript" th:src="@{/js/user/websitesServices.js}"/>
+    <script type="text/javascript" th:src="@{/js/user/websitesControllers.js}"/>
     <script type="text/javascript" th:src="@{/js/public/indexServices.js}"/>
     <script type="text/javascript" th:src="@{/js/public/indexControllers.js}"/>
     <script type="text/javascript" th:src="@{/js/public/accountControllers.js}"/>
@@ -134,9 +141,7 @@
         }
 
         #loginBar {
-            height: 260%;
-            line-height: 75%;
-            padding: 27px;
+            left: -16%;
             background-color: #4d4d4d;
         }
 
@@ -201,11 +206,12 @@
                     </li>
                     <li class="dropdown" id="menuLogin">
                         <a class="dropdown-toggle" href="" data-toggle="dropdown" id="navLogin" ng-controller="IndexController" ><span
-                                class="glyphicon glyphicon-log-in"></span> Hi, {{username}}
+                                class="glyphicon glyphicon-user"></span> USER
                         </a>
                         <div></div>
                         <ul class="dropdown-menu" id="loginBar" ng-controller="IndexController">
-                            <li ng-click="logout()"><a>LOGOUT</a></li>
+                            <li style = "margin-left: 12%;"><a href="#websites" style="text-align: justify;"> WEBSITES</a></li>
+                            <li style = "margin-left: 12%;" ng-click="logout()"><a style="text-align: center;">LOGOUT</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -1,7 +1,7 @@
 package com.academy.web.config;
 
-import com.academy.web.config.cache.CacheConstants;
-import com.hazelcast.core.HazelcastInstance;
+import com.academy.cache.UserCache;
+import com.academy.service.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +21,10 @@ import java.io.IOException;
 public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
-    HazelcastInstance hzInstance;
+    UserCache cache;
+
+    @Autowired
+    WebsiteService websiteService;
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -37,7 +40,8 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
         for(GrantedAuthority grantedAuthority: auth.getAuthorities()) {
             if("ROLE_USER".equals(grantedAuthority.getAuthority()) || "ROLE_ADMIN".equals(grantedAuthority.getAuthority())) {
                 stringBuilder.append("user/#");
-                hzInstance.getUserContext().put(CacheConstants.LOGGED_USERNAME,auth.getName());
+                cache.setLoggedUsername(auth.getName());
+                cache.setUserWebsites(websiteService.getUserWebsites());
                 break;
             }
         }
