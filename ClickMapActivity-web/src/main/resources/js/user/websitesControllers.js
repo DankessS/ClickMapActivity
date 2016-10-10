@@ -3,25 +3,30 @@
  */
 var WebsitesControllers = angular.module('WebsitesControllers', []);
 
-WebsitesControllers.controller('WebsitesController', ['$scope', '$routeParams', '$route', 'WebsitesService',
-    function ($scope, $routeParams, $route, WebsitesService) {
+WebsitesControllers.controller('WebsitesController', ['$scope', '$location', '$routeParams', '$route', 'WebsitesService', 'WebsitesServiceRepo',
+    function ($scope, $location, $routeParams, $route, WebsitesService, WebsitesServiceRepo) {
     $scope.userWebsites = {};
     $scope.websiteUrl;
     $scope.deleteConfirm;
 
-    WebsitesService.getUserWebsites(function (websites) {
+    WebsitesServiceRepo.getUserWebsites(function (websites) {
         $scope.userWebsites = websites;
+        WebsitesService.setUserWebsites(websites);
     });
 
     $scope.addWebsite = function () {
-        WebsitesService.saveWebsite({websiteUrl: $scope.websiteUrl}, function () {
+        WebsitesServiceRepo.saveWebsite({websiteUrl: $scope.websiteUrl}, function () {
             $route.reload();
         });
     };
     
     $scope.deleteWebsite = function (website) {
-        WebsitesService.deleteWebsite({id: website.id}, function() {
+        WebsitesServiceRepo.deleteWebsite({id: website.id}, function() {
             $route.reload();
         });
     }
+
+    $scope.showSubpages = function(website) {
+            $location.path('/subpages/' + website.url);
+        }
 }]);

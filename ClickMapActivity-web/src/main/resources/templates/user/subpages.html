@@ -1,0 +1,89 @@
+<link rel="stylesheet" type="text/css" href="css/subpages.css" media="screen"/>
+
+<script type="application/javascript">
+    $(document).ready(function () {
+        $('i.glyphicon-thumbs-up, i.glyphicon-thumbs-down').click(function () {
+            var $this = $(this),
+                    c = $this.data('count');
+            if (!c) c = 0;
+            c++;
+            $this.data('count', c);
+            $('#' + this.id + '-bs3').html(c);
+        });
+        $(document).delegate('*[data-toggle="lightbox"]', 'click', function (event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });
+    });
+</script>
+<div ng-click="shouldShow=true">
+    <div class="base">
+        <p class="title">
+        <h1>Your subpages for {{websiteUrl}}</h1></p>
+        <p class="desc">Here you can add your website's subpages and preview them statistics. You can do it by load
+            subpage's
+            image from your disk space.
+            If you have already installed script in your website, then every 15 minutes every subpage will updates with
+            new
+            click activity data.</p>
+    </div>
+    <div class="container mt40" style="margin-top:6%;">
+        <section class="row">
+
+            <article class="col-xs-12 col-sm-6 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <a href="http://lorempixel.com/350/350/nature/4" title="Nature Portfolio" class="zoom"
+                           data-title="Amazing Nature" data-footer="The beauty of nature" data-type="image"
+                           data-toggle="lightbox">
+                            <img src="../../images/foto.jpg" alt="Nature Portfolio"/>
+                            <span class="overlay"><i class="glyphicon glyphicon-fullscreen"></i></span>
+                        </a>
+                    </div>
+                    <div class="panel-footer">
+                        <h4><a href="#" title="Nature Portfolio">Nature</a></h4>
+                    <span class="pull-right">
+                        <i id="refresh-icon" class="glyphicon glyphicon-refresh" title="Refresh time"></i>
+                        Inactive
+                        <i id="displays-icon" class="glyphicon glyphicon-flash" title="Displays"></i>
+                        <div id="displays" title="Displays">103</div>
+                    </span>
+                    </div>
+                </div>
+            </article>
+
+
+            <article class="col-xs-12 col-sm-6 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body" id="subpage-panel">
+                        <div ng-show="shouldShow">
+                            <a title="Add new subpage" class="zoom"
+                               data-title="Add ne subpage" data-footer="Add new subpage" data-type="image"
+                               data-toggle="lightbox" ng-click="shouldShow = false;$event.stopPropagation()">
+                                <img src="../../images/blankPage.png" alt="Add new subpage"/>
+                                <span class="overlay"><i class="glyphicon glyphicon-plus"></i></span>
+                            </a>
+                        </div>
+                        <div id="subpage-form" ng-show="!shouldShow">
+                            <form method="POST" enctype="multipart/form-data">
+                                <div id="file-browse">
+                                    <label class="btn btn-default btn-file"
+                                           style="background-color: #7a43b6; color:white">
+                                        Browse <input type="file" style="display: none;" name="subpageImage">
+                                </div>
+                                <div id="subpage-name">
+                                    <label for="url">Subpage name:</label>
+                                    <input type="text" class="form-control" id="url" style="width:70%"
+                                           name="subpageName"
+                                           required>
+                                </div>
+                                <button id="addBtn" type="submit" class="btn btn-default">ADD SUBPAGE</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            </label>
+        </section>
+    </div>
+</div>

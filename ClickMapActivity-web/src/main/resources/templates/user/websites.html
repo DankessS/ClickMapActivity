@@ -2,6 +2,7 @@
     .desc {
         font-size: 1.2em;
         font-family: Verdana, Geneva, sans-serif;
+        color: black;
     }
 
     #base {
@@ -12,6 +13,7 @@
 
     h1 {
         font-family: Verdana, Geneva, sans-serif;
+        color: black;
     }
 
     .well-text {
@@ -27,7 +29,7 @@
     }
 
     .well-text:focus, :hover {
-        color: #5e5e5e;
+        color: #d4d4d4;
     }
 
     #dropdown-well, #websites-well {
@@ -76,7 +78,7 @@
     <br></br>
 
     <div ng-repeat="w in userWebsites">
-        <div class="well well-nm" id="websites-well">
+        <div class="well well-nm" id="websites-well" ng-click="showSubpages(w)">
             <p class="well-text"><span class="glyphicon glyphicon-th"></span></p>
             <p class="well-text">{{w.url}}</p>
             <p class="delete-btn">

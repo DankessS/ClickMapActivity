@@ -23,7 +23,7 @@ public class LogoutAuthenticationSuccessHandler implements LogoutSuccessHandler 
     @Override
     public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse rsp, Authentication auth)
             throws IOException, ServletException {
-        cache.removeLoggedUsername();
         cache.removeUserWebsites();
+        cache.removeLoggedUsername();
     }
 }

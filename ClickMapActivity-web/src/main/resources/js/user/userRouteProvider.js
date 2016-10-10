@@ -2,7 +2,8 @@
  * Created by Daniel Palonek on 2016-09-10.
  */
 var mainApp = angular.module("mainApp", ['ngRoute', 'ngAnimate', 'IndexControllers', 'IndexServices',
-    'AccountControllers', 'WebsitesControllers', 'WebsitesServices', 'AccountServices', 'ui.grid', 'ui.grid.pagination']);
+    'AccountControllers', 'WebsitesControllers', 'WebsitesServices', 'SubpagesControllers', 'SubpagesServices','AccountServices',
+    'ui.grid', 'ui.grid.pagination']);
 
 mainApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
@@ -17,6 +18,10 @@ mainApp.config(['$routeProvider', function ($routeProvider) {
         templateUrl: '/user/websites.html',
         controller: 'WebsitesController'
     }).
+    when('/subpages/:websiteUrl', {
+        templateUrl: '/user/subpages.html',
+        controller: 'SubpagesController'
+    }).    
     otherwise({
         templateUrl: '/public/main.html',
         controller: 'IndexController'
