@@ -5,10 +5,12 @@ import com.academy.model.dao.Website;
 import com.academy.model.dto.SubpageDTO;
 import com.academy.repo.WebsiteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Daniel Palonek on 2016-08-18.
  */
+@Component
 public class SubpageMapper implements Mapper<Subpage, SubpageDTO> {
 
     @Autowired

@@ -35,13 +35,13 @@ public class WebsiteService extends AbstractService<Website,WebsiteDTO,WebsiteRe
         website.setAccountId(accountService.getLoggedUserAccountId());
         website.setUrl(websiteUrl);
         save(website);
-        cache.replace(getUserWebsites());
+        cache.setUserWebsites(getUserWebsites());
         return true;
     }
 
     public boolean delete(Long websiteId) {
         repo.delete(websiteId);
-        cache.replace(getUserWebsites());
+        cache.setUserWebsites(getUserWebsites());
         return true;
     }
 

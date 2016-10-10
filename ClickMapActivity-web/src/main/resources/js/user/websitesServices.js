@@ -3,7 +3,7 @@
  */
 var WebsitesServices = angular.module('WebsitesServices', ['ngResource']);
 
-WebsitesServices.factory('WebsitesService', [
+WebsitesServices.factory('WebsitesServiceRepo', [
     '$resource', function ($resource) {
         return $resource('', [], {
             
@@ -23,6 +23,40 @@ WebsitesServices.factory('WebsitesService', [
                 method: 'DELETE',
                 params: {id: "@id"},
                 url: '/websites/delete/:id'
+            },
+            
+            saveRequestedWebsite: {
+                method: 'PUT',
+                params: {id: '@id'},
+                url: '/websites/saveRequestedWebsite'
+            },
+
+            getRequestedWebsite: {
+                method: 'GET',
+                url: '/websites/getRequestedWebsite'
             }
         });
-    }]);
+    }
+]);
+
+WebsitesServices.service('WebsitesService', function () {
+    var userWebsites = {};
+
+    this.setUserWebsites = function (newReqWebsites) {
+        userWebsites = newReqWebsites;
+    };
+
+    this.getUserWebsites = function() {
+        return userWebsites;
+    }
+
+    this.getRequestedWebsite = function (url) {
+        var result = {};
+        userWebsites.forEach( function (w) {
+            if(w.url === url) {
+                result = w;
+            }    
+        });
+        return result;
+    };
+});

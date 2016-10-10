@@ -7,6 +7,13 @@ import com.academy.model.dto.WebsiteDTO;
 import com.academy.service.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Daniel Palonek on 2016-09-16.
@@ -28,9 +35,19 @@ public class WebsitesController extends AbstractController<Website,WebsiteDTO,We
         return new ValueWrapper<>(service.saveWebsite(websiteUrl));
     }
 
-    @RequestMapping(value ="delete/{id}", method=RequestMethod.DELETE)
+    @RequestMapping(value ="/delete/{id}", method=RequestMethod.DELETE)
     public ValueWrapper<Boolean> deleteWebsite(@PathVariable final Long id) {
         return new ValueWrapper<>(service.delete(id));
+    }
+
+    @RequestMapping(value = "/saveRequestedWebsite", method = RequestMethod.PUT)
+    public void saveRequestedWebsite(@RequestBody final WebsiteDTO website) {
+        cache.setRequestedWebsite(website);
+    }
+
+    @RequestMapping(value = "/getRequestedWebsite", method = RequestMethod.GET)
+    public WebsiteDTO getRequestedWebsite() {
+        return (WebsiteDTO)cache.getRequestedWebsite();
     }
 
 }
