@@ -1,0 +1,32 @@
+{
+  "name": "ClickMapActivity",
+  "description": "Bower dependency config",
+  "main": "index.html",
+  "authors": [
+    "DankessS <danekp0510@vp.pl>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/DankessS/ClickMapActivity",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.5.5",
+    "angular-route": "latest",
+    "angular-animate": "latest",
+    "angular-resource": "latest",
+    "angular-ui-grid": "latest",
+    "angularjs-toaster": "latest",
+    "angular-loading-bar": "latest",
+    "angular-modal-service": "latest",
+    "bootstrap": "latest"
+  },
+  "resolutions": {
+    "angular": "1.5.5"
+  }
+}
