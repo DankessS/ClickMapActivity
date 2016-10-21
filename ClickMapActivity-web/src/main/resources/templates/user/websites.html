@@ -80,7 +80,7 @@
     <div ng-repeat="w in userWebsites">
         <div class="well well-nm" id="websites-well" ng-click="showSubpages(w)">
             <p class="well-text"><span class="glyphicon glyphicon-th"></span></p>
-            <p class="well-text">{{w.url}}</p>
+            <p class="well-text"><span ng-bind="w.url"></span></p>
             <p class="delete-btn">
                 <span class ="glyphicon glyphicon-remove" data-toggle="tooltip" title="Delete website" ng-click="deleteWebsite(w)"></span>
             </p>

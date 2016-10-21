@@ -5,12 +5,14 @@ import com.academy.model.dao.Subpage;
 import com.academy.model.dto.ActivityDTO;
 import com.academy.repo.SubpageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 /**
  * Created by Daniel Palonek on 2016-08-18.
  */
+@Component
 public class ActivityMapper implements Mapper<Activity, ActivityDTO> {
 
     @Autowired

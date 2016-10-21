@@ -2,10 +2,10 @@ group 'com.academy.engineer'
 version '1.0-SNAPSHOT'
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.boot:spring-boot-starter-security")
+    compile 'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-security',
+            'com.hazelcast:hazelcast:3.7.1'
     compile project(':ClickMapActivity-model')
     compile project(':ClickMapActivity-repo')
     compile project(':ClickMapActivity-cache')
-    compile 'com.hazelcast:hazelcast:3.7.1'
 }

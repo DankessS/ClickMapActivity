@@ -24,6 +24,7 @@
     "angularjs-toaster": "latest",
     "angular-loading-bar": "latest",
     "angular-modal-service": "latest",
+    "angular-file-model": "latest",
     "bootstrap": "latest"
   },
   "resolutions": {

@@ -3,13 +3,14 @@ package com.academy.service.mappers;
 import com.academy.model.dao.Activity;
 import com.academy.model.dao.Points;
 import com.academy.model.dto.PointsDTO;
-import com.academy.repo.AccountRepo;
 import com.academy.repo.ActivityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Daniel Palonek on 2016-08-18.
  */
+@Component
 public class PointsMapper implements Mapper<Points,PointsDTO> {
 
     @Autowired

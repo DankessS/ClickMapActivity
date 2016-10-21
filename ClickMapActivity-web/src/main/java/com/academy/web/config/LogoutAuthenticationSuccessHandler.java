@@ -18,12 +18,11 @@ import java.io.IOException;
 public class LogoutAuthenticationSuccessHandler implements LogoutSuccessHandler {
 
     @Autowired
-    UserCache cache;
+    CacheLoader cacheLoader;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse rsp, Authentication auth)
             throws IOException, ServletException {
-        cache.removeUserWebsites();
-        cache.removeLoggedUsername();
+        cacheLoader.clean();
     }
 }

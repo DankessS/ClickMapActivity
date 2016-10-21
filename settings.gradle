@@ -1,9 +1,7 @@
 rootProject.name = 'ClickMapActivity'
-include 'ClickMapActivity-model'
-include 'ClickMapActivity-service'
-include 'ClickMapActivity-repo'
-include 'ClickMapActivity-web'
-include 'ClickMapActivity-cache'
-include 'ClickMapActivity-cache'
-include 'ClickMapActivity-cache'
+include 'ClickMapActivity-model',
+        'ClickMapActivity-cache',
+        'ClickMapActivity-repo',
+        'ClickMapActivity-service',
+        'ClickMapActivity-web'
 

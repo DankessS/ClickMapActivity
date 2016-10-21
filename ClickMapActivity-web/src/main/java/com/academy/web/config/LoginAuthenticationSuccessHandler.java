@@ -21,7 +21,7 @@ import java.io.IOException;
 public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
-    UserCache cache;
+    CacheLoader cacheLoader;
 
     @Autowired
     WebsiteService websiteService;
@@ -40,8 +40,7 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
         for(GrantedAuthority grantedAuthority: auth.getAuthorities()) {
             if("ROLE_USER".equals(grantedAuthority.getAuthority()) || "ROLE_ADMIN".equals(grantedAuthority.getAuthority())) {
                 stringBuilder.append("user/#");
-                cache.setLoggedUsername(auth.getName());
-                cache.setUserWebsites(websiteService.getUserWebsites());
+                cacheLoader.load(auth.getName());
                 break;
             }
         }

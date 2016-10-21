@@ -27,6 +27,8 @@ WebsitesControllers.controller('WebsitesController', ['$scope', '$location', '$r
     }
 
     $scope.showSubpages = function(website) {
+        WebsitesServiceRepo.saveRequestedWebsite(website, function() {
             $location.path('/subpages/' + website.url);
-        }
+        });
+    }
 }]);

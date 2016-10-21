@@ -2,15 +2,15 @@ group 'com.academy.engineer'
 version '1.0-SNAPSHOT'
 
 dependencies {
-    compile ("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile ("org.springframework.boot:spring-boot-starter-websocket")
-    compile ("org.apache.tomcat.embed:tomcat-embed-websocket")
-    compile ("org.springframework.boot:spring-boot-starter-thymeleaf")
-    compile ("mysql:mysql-connector-java")
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa',
+            'org.springframework.boot:spring-boot-starter-security',
+            'org.springframework.boot:spring-boot-starter-websocket',
+            'org.apache.tomcat.embed:tomcat-embed-websocket',
+            'org.springframework.boot:spring-boot-starter-thymeleaf',
+            'mysql:mysql-connector-java',
+            'com.hazelcast:hazelcast:3.7.1'
     compile project(':ClickMapActivity-model')
     compile project(':ClickMapActivity-repo')
     compile project(':ClickMapActivity-service')
     compile project(':ClickMapActivity-cache')
-    compile 'com.hazelcast:hazelcast:3.7.1'
 }
