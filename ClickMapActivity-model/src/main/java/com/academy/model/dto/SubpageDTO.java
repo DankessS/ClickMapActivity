@@ -1,9 +1,11 @@
 package com.academy.model.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by Daniel Palonek on 2016-08-18.
  */
-public class SubpageDTO {
+public class SubpageDTO implements Serializable {
 
     private Long id;
     private String name;

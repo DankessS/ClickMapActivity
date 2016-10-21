@@ -27,7 +27,6 @@ WebsitesServices.factory('WebsitesServiceRepo', [
             
             saveRequestedWebsite: {
                 method: 'PUT',
-                params: {id: '@id'},
                 url: '/websites/saveRequestedWebsite'
             },
 

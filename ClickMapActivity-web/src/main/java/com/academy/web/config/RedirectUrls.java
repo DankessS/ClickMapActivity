@@ -9,5 +9,6 @@ public class RedirectUrls {
     public static final String ERROR = "error/";
     public static final String ERROR_LOGIN = HOME + ERROR + "login";
     public static final String ERROR_USER_EXIST = HOME + ERROR + "userExisted";
+    public static final String ERROR_COULD_NOT_UPLOAD_SUBPAGE = HOME + ERROR + "subpageNotUploaded";
 
 }

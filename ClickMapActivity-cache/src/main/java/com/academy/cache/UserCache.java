@@ -1,11 +1,6 @@
 package com.academy.cache;
 
-import com.hazelcast.core.IMap;
 import org.springframework.stereotype.Component;
-
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * Created by Daniel Palonek on 2016-09-16.
@@ -44,4 +39,18 @@ public class UserCache extends AbstractCacheSupplier {
     public Object getRequestedWebsite() {
         return getUserContext().getOrDefault(CacheConstants.REQUESTED_WEBSITE,null);
     }
+
+    public void setWebsiteSubpages(Long websiteId, Iterable subpages) {
+        getMap(CacheConstants.WEBSITE_SUBPAGES).set(websiteId,subpages);
+    }
+
+    public Iterable getWebsiteSubpages(Long websiteId) {
+        return (Iterable)getMap(CacheConstants.WEBSITE_SUBPAGES).get(websiteId);
+    }
+
+    public void deleteWebsiteSubpages(Long websiteId) {
+        getMap(CacheConstants.WEBSITE_SUBPAGES).delete(websiteId);
+    }
+
+
 }

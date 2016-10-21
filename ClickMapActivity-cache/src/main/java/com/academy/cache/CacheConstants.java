@@ -5,8 +5,9 @@ package com.academy.cache;
  */
 public class CacheConstants {
 
-    public static final String LOGGED_USERNAME = "loggedUsername";
-    public static final String USER_WEBSITES = "userWebsites";
-    public static final String REQUESTED_WEBSITE = "requestedWebsite";
+    static final String LOGGED_USERNAME = "loggedUsername";
+    static final String USER_WEBSITES = "userWebsites";
+    static final String REQUESTED_WEBSITE = "requestedWebsite";
+    static final String WEBSITE_SUBPAGES = "websiteSubpages";
 
 }
