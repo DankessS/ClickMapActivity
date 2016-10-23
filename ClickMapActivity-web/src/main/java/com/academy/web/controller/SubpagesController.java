@@ -12,6 +12,7 @@ import com.hazelcast.nio.IOUtil;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by Daniel Palonek on 2016-10-06.
@@ -57,19 +55,7 @@ public class SubpagesController extends AbstractController<Subpage, SubpageDTO, 
     @RequestMapping(value = "/images/{name:.+}", method = RequestMethod.GET)
     public void getSubpageImage(@PathVariable("name") String name,
                                 HttpServletResponse response) {
-        final WebsiteDTO website = (WebsiteDTO) cache.getRequestedWebsite();
-        try {
-            File f = new File("ClickMapActivity-web/src/main/resources/images/" + website.getId() + "/" + name);
-//            BufferedImage img = ImageIO.read(f);
-//            ImageConverter.convertToGrayScale(img); //FIXME ogarnac skale szarosci
-//            ImageIO.write(img,"PNG",f);
-            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(f));
-            IOUtils.copy(inputStream, response.getOutputStream());
-            response.flushBuffer();
-            inputStream.close();
-        } catch (IOException e) {
-            LOGGER.warn(e.getMessage());
-        }
+        service.getImage(name,response);
     }
 
     @RequestMapping(value = "/delete/{name}", method = RequestMethod.DELETE)

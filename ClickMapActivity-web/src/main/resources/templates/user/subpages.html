@@ -17,6 +17,9 @@
         });
     });
 </script>
+<script type="application/javascript">
+    $("#file").on('load', function() { document.getElementsByClassName('loader')[0].style.display='none'; })
+</script>
 <div class="base">
     <p class="title">
     <h1>Your subpages for {{websiteUrl}}</h1></p>
@@ -38,6 +41,7 @@
                            data-title="{{s.name}}" data-type="image"
                            data-toggle="lightbox">
                             <img ng-src="/subpages/images/{{s.name}}" alt="{{s.name}}"/>
+                            <!--<div class="loader"></div>-->
                             <span class="overlay"><i class="glyphicon glyphicon-fullscreen"></i></span>
                         </a>
                     </div>
@@ -68,11 +72,11 @@
                         </a>
                     </div>
                     <div id="subpage-form" ng-show="!shouldShow">
-                        <form method="POST" action="/subpages/add" enctype="multipart/form-data">
+                        <form name = "uploadForm" method="POST" action="/subpages/add" enctype="multipart/form-data">
                             <div id="file-browse">
                                 <label class="btn btn-default btn-file"
                                        style="background-color: #7a43b6; color:white">
-                                    Browse <input type="file" style="display: none;" name="file" file-model="file"
+                                    Browse <input type="file" style="display: none;" id="file" file-model="file"
                                                   required>
                             </div>
                             <div id="subpage-name">

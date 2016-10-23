@@ -8,6 +8,8 @@ import com.academy.repo.SubpageRepo;
 import com.academy.service.mappers.SubpageMapper;
 import com.academy.service.tools.ImageConverter;
 import org.apache.log4j.Logger;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.stream.Stream;
+import java.io.*;
 import java.util.stream.StreamSupport;
 
 /**
@@ -47,8 +46,8 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
                 BufferedOutputStream s = new BufferedOutputStream(new FileOutputStream(f));
                 FileCopyUtils.copy(file.getInputStream(),s);
                 s.close();
-                BufferedImage img = ImageIO.read(f);
                 final SubpageDTO subpageDTO = new SubpageDTO();
+                BufferedImage img = ImageIO.read(f);
                 subpageDTO.setName(name);
                 subpageDTO.setResX(img.getWidth());
                 subpageDTO.setResY(img.getHeight());
@@ -69,6 +68,23 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
 
     public Iterable<SubpageDTO> getSubgapesForWebsiteId(final Long websiteId) {
         return mapper.convertToDTO(repo.getByWebsiteId(websiteId));
+    }
+
+    public void getImage(String name, HttpServletResponse response) {
+        final WebsiteDTO website = (WebsiteDTO) cache.getRequestedWebsite();
+        try {
+            File f = new File("ClickMapActivity-web/src/main/resources/images/" + website.getId() + "/" + name);
+            BufferedImage img = ImageIO.read(f);
+            ByteArrayOutputStream outStr = new ByteArrayOutputStream();
+            img = ImageConverter.grayScale(img);
+            ImageIO.write(img,"png",outStr);
+            InputStream inputStream = new ByteArrayInputStream(outStr.toByteArray());
+            IOUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
+            inputStream.close();
+        } catch (IOException e) {
+            LOGGER.warn(e.getMessage());
+        }
     }
 
     public boolean delete(final String name) {

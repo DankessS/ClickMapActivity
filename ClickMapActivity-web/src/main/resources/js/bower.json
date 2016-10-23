@@ -25,7 +25,8 @@
     "angular-loading-bar": "latest",
     "angular-modal-service": "latest",
     "angular-file-model": "latest",
-    "bootstrap": "latest"
+    "bootstrap": "latest",
+    "jquery-circle-progress": "latest"
   },
   "resolutions": {
     "angular": "1.5.5"

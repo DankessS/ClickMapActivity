@@ -9,6 +9,7 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$route','$locat
         $scope.subpages = {};
         $scope.isSubpageExists = false;
         $scope.websiteUrl = window.location.href.split("/subpages/")[1];
+        $scope.isFileLoaded = true;
 
         SubpagesService.getByWebsiteId(function (subpages) {
             $scope.subpages = subpages;
