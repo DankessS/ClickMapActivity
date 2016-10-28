@@ -70,6 +70,10 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
         return mapper.convertToDTO(repo.getByWebsiteId(websiteId));
     }
 
+    public SubpageDTO getByNameAndWebsiteId(String name, Long websiteId) {
+        return mapper.convertToDTO(repo.findByNameAndWebsiteId(name,websiteId));
+    }
+
     public void getImage(String name, HttpServletResponse response) {
         final WebsiteDTO website = (WebsiteDTO) cache.getRequestedWebsite();
         try {

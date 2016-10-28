@@ -42,4 +42,8 @@ public class WebsiteService extends AbstractService<Website,WebsiteDTO,WebsiteRe
         return true;
     }
 
+    public WebsiteDTO getByName(String name) {
+        return mapper.convertToDTO(repo.findByUrl(name));
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.academy.repo;
 
 import com.academy.model.dao.Website;
+import com.academy.model.dto.WebsiteDTO;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -9,5 +10,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface WebsiteRepo extends CrudRepository<Website, Long> {
     Iterable<Website> findByAccountId(Long accountId);
     void deleteById(Long websiteId);
+    Website findByUrl(String name);
 
 }

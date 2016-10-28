@@ -31,4 +31,5 @@ WebsitesControllers.controller('WebsitesController', ['$scope', '$location', '$r
             $location.path('/subpages/' + website.url);
         });
     }
+
 }]);

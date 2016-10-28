@@ -49,8 +49,19 @@ public class UserCache extends AbstractCacheSupplier {
     }
 
     public void deleteWebsiteSubpages(Long websiteId) {
-        getMap(CacheConstants.WEBSITE_SUBPAGES).delete(websiteId);
+        getMap(CacheConstants.WEBSITE_SUBPAGES).removeAsync(websiteId);
     }
 
+    public void setSubpageActivities(Long subpageId, Iterable activities) {
+        getMap(CacheConstants.ACTIVITIES).set(subpageId,activities);
+    }
+
+    public Iterable getSubpageActivities(Long subpageId) {
+        return (Iterable)getMap(CacheConstants.ACTIVITIES).get(subpageId);
+    }
+
+    public void deleteSubpageActivities(Long subpageId) {
+        getMap(CacheConstants.ACTIVITIES).removeAsync(subpageId);
+    }
 
 }

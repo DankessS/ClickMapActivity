@@ -9,5 +9,7 @@ public class CacheConstants {
     static final String USER_WEBSITES = "userWebsites";
     static final String REQUESTED_WEBSITE = "requestedWebsite";
     static final String WEBSITE_SUBPAGES = "websiteSubpages";
+    static final String ACTIVITIES = "activities";
+    static final String POINTS = "points";
 
 }

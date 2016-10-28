@@ -3,13 +3,14 @@
  */
 var SubpagesControllers = angular.module('SubpagesControllers', []);
 
-SubpagesControllers.controller('SubpagesController', ['$scope', '$route','$location', '$routeParams', 'SubpagesService', 'WebsitesService', 'WebsitesServiceRepo',
-    function ($scope, $route, $location, $routeParams, SubpagesService, WebsitesService, WebsitesServiceRepo) {
+SubpagesControllers.controller('SubpagesController', ['$scope', '$route', '$timeout', '$location', '$routeParams', 'SubpagesService', 'WebsitesService', 'WebsitesServiceRepo',
+    function ($scope, $route, $timeout, $location, $routeParams, SubpagesService, WebsitesService, WebsitesServiceRepo) {
         $scope.shouldShow = true;
         $scope.subpages = {};
         $scope.isSubpageExists = false;
         $scope.websiteUrl = window.location.href.split("/subpages/")[1];
-        $scope.isFileLoaded = true;
+        $scope.isFileLoaded = false;
+        $
 
         SubpagesService.getByWebsiteId(function (subpages) {
             $scope.subpages = subpages;

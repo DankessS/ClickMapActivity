@@ -1,6 +1,7 @@
 package com.academy.model.dao;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class Activity {
 
     @OneToMany(mappedBy = "activity")
     private Set<Points> points;
-    private Date date;
+    private LocalDateTime date;
 
     @ManyToOne
     private Subpage subpage;
@@ -37,11 +38,11 @@ public class Activity {
         this.points = points;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

@@ -1,6 +1,6 @@
 package com.academy.model.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by Daniel Palonek on 2016-08-18.
@@ -8,7 +8,7 @@ import java.util.Date;
 public class ActivityDTO {
 
     private Long id;
-    private Date date;
+    private LocalDateTime date;
     private Long subpageId;
 
     public Long getId() {
@@ -19,11 +19,11 @@ public class ActivityDTO {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

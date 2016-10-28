@@ -7,6 +7,7 @@ import com.academy.repo.SubpageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -22,7 +23,7 @@ public class ActivityMapper implements Mapper<Activity, ActivityDTO> {
     public Activity convertToDAO(ActivityDTO dto) {
         final Activity dao = new Activity();
         dao.setId(dto.getId());
-        dao.setDate(dto.getDate() == null ? new Date() : dto.getDate());
+        dao.setDate(dto.getDate() == null ? LocalDateTime.now() : dto.getDate());
         if(dto.getSubpageId() != null) {
             Subpage subpage = subpageRepo.findOne(dto.getSubpageId());
             if(subpage != null) {

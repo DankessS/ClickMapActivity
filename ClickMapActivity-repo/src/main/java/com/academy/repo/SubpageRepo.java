@@ -12,4 +12,6 @@ public interface SubpageRepo extends CrudRepository<Subpage, Long> {
 
     void deleteByNameAndWebsiteId(String name, Long websiteId);
 
+    Subpage findByNameAndWebsiteId(String name, Long websiteId);
+
 }
