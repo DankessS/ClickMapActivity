@@ -14,11 +14,12 @@ public class ActivitiesController {
     @Autowired
     private ActivityService activityService;
 
-    @RequestMapping(value = "/log/{wName}/{sName}", method = RequestMethod.POST)
+    @RequestMapping(value = "/log/{wName}/{sName}/{res}", method = RequestMethod.POST)
     public void logActivity(@PathVariable("wName") String websiteName,
                             @PathVariable("sName") String subpageName,
+                            @PathVariable("res") String resolution,
                             Iterable points) {
-        activityService.logActivity(websiteName, subpageName, points);
+        activityService.logActivity(websiteName, subpageName, resolution, points);
     }
 
 }

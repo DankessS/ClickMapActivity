@@ -17,7 +17,7 @@ public class Website {
     @ManyToOne
     private Account account;
 
-    @OneToMany(mappedBy = "website")
+    @OneToMany(mappedBy = "website", cascade = {CascadeType.ALL})
     private List<Subpage> subpages;
 
     public Long getId() {

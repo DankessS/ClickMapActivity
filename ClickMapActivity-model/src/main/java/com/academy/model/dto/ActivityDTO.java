@@ -1,11 +1,12 @@
 package com.academy.model.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * Created by Daniel Palonek on 2016-08-18.
  */
-public class ActivityDTO {
+public class ActivityDTO implements Serializable {
 
     private Long id;
     private LocalDateTime date;
@@ -33,5 +34,9 @@ public class ActivityDTO {
 
     public void setSubpageId(Long subpageId) {
         this.subpageId = subpageId;
+    }
+
+    public int compare(LocalDateTime other) {
+        return this.getDate().compareTo(other);
     }
 }

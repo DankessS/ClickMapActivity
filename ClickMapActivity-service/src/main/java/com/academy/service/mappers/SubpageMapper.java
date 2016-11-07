@@ -7,6 +7,8 @@ import com.academy.repo.WebsiteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by Daniel Palonek on 2016-08-18.
  */
@@ -39,6 +41,8 @@ public class SubpageMapper implements Mapper<Subpage, SubpageDTO> {
         dto.setResX(dao.getResX());
         dto.setResY(dao.getResY());
         dto.setName(dao.getName());
+        dto.setDisplays(0L);
+        dto.setLastUpdateEpoch(0L);
         if(dao.getWebsite() != null) {
             dto.setWebsiteId(dao.getWebsite().getId());
         }

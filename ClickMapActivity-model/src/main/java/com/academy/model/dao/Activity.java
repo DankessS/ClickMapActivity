@@ -15,11 +15,12 @@ public class Activity {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "activity")
+    @OneToMany(mappedBy = "activity", cascade = {CascadeType.ALL})
     private Set<Points> points;
+
     private LocalDateTime date;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Subpage subpage;
 
     public Long getId() {

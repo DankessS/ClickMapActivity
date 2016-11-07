@@ -2,6 +2,8 @@ package com.academy.cache;
 
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by Daniel Palonek on 2016-09-16.
  */
@@ -62,6 +64,18 @@ public class UserCache extends AbstractCacheSupplier {
 
     public void deleteSubpageActivities(Long subpageId) {
         getMap(CacheConstants.ACTIVITIES).removeAsync(subpageId);
+    }
+
+    public void setActivityPoints(Long activityId, Iterable points) {
+        getMap(CacheConstants.POINTS).set(activityId, points);
+    }
+
+    public Iterable getActivityPoints(Long activityId) {
+        return (Iterable)getMap(CacheConstants.POINTS).get(activityId);
+    }
+
+    public void deleteActivityPoints(Long activityId) {
+        getMap(CacheConstants.POINTS).removeAsync(activityId);
     }
 
 }

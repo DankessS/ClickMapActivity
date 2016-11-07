@@ -16,7 +16,8 @@ SubpagesServices.factory('SubpagesService', [
             getSubpageImage: {
                 url: '/subpages/images/:name',
                 params: {name: "@name"},
-                method: 'GET'
+                method: 'GET',
+                responseType: 'arraybuffer'
             },
             
             deleteSubpage: {
@@ -25,6 +26,12 @@ SubpagesServices.factory('SubpagesService', [
                 method: 'DELETE'
             },
 
+            getDisplays: {
+                url: '/subpages/displays/:id',
+                params: {id: '@id'},
+                method: 'GET'
+            },
+            
             checkIfExists: {
                 url: '/subpages/checkIfExists/:name',
                 params: {name: '@name'},

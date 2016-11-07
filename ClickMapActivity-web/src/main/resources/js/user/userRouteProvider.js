@@ -21,7 +21,11 @@ mainApp.config(['$routeProvider', function ($routeProvider) {
     when('/subpages/:websiteUrl', {
         templateUrl: '/user/subpages.html',
         controller: 'SubpagesController'
-    }).    
+    }).
+    when('/subpages/image/:imgName', {
+        templateUrl: '/user/image.html',
+        controller: 'SubpagesController'
+    }).
     otherwise({
         templateUrl: '/public/main.html',
         controller: 'IndexController'

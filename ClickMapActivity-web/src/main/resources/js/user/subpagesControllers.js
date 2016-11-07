@@ -10,7 +10,8 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$route', '$time
         $scope.isSubpageExists = false;
         $scope.websiteUrl = window.location.href.split("/subpages/")[1];
         $scope.isFileLoaded = false;
-        $
+        $scope.imgName = {};
+        $scope.displays = {};
 
         SubpagesService.getByWebsiteId(function (subpages) {
             $scope.subpages = subpages;
@@ -32,6 +33,22 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$route', '$time
             SubpagesService.checkIfExists({name: $scope.subpageName}, function (rsp) {
                 $scope.isSubpageExists = rsp.value;
             })
+        };
+
+        $scope.loadImageName = function() {
+            $scope.imgName = window.location.href.split("/subpages/image/")[1];
+        };
+
+        $scope.redirectToImage = function(name) {
+            $location.path('/subpages/image/' + name);
+        };
+
+        $scope.showDate = function (epoch) {
+            if(epoch === 0) {
+                return "Inactive";
+            }
+            var date = new Date(epoch * 1000);
+            return date.toLocaleString();
         };
 
         // $scope.shouldShow = $(document).mouseup(function (e) {

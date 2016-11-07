@@ -23,4 +23,8 @@ public class PointsService extends AbstractService<Points,PointsDTO,PointsRepo,P
         repo.save(mapper.convertToDAO(pointsDTO));
     }
 
+    public Iterable<PointsDTO> getByActivityId(Long activityId) {
+        return mapper.convertToDTO(repo.findByActivityId(activityId));
+    }
+
 }

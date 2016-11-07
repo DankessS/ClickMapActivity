@@ -11,6 +11,8 @@ public class SubpageDTO implements Serializable {
     private String name;
     private Integer resX;
     private Integer resY;
+    private Long lastUpdateEpoch;
+    private Long displays;
     private Long websiteId;
 
     public Long getWebsiteId() {
@@ -51,5 +53,21 @@ public class SubpageDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getLastUpdateEpoch() {
+        return lastUpdateEpoch;
+    }
+
+    public void setLastUpdateEpoch(Long lastUpdateEpoch) {
+        this.lastUpdateEpoch = lastUpdateEpoch;
+    }
+
+    public Long getDisplays() {
+        return displays;
+    }
+
+    public void setDisplays(Long displays) {
+        this.displays = displays;
     }
 }

@@ -2,6 +2,8 @@ package com.academy.service;
 
 import com.academy.cache.UserCache;
 import com.academy.model.dao.Subpage;
+import com.academy.model.dto.ActivityDTO;
+import com.academy.model.dto.PointsDTO;
 import com.academy.model.dto.SubpageDTO;
 import com.academy.model.dto.WebsiteDTO;
 import com.academy.repo.SubpageRepo;
@@ -18,9 +20,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 /**
@@ -43,11 +51,10 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
                 if(!f.exists())
                     f.mkdirs();
                 f = new File("ClickMapActivity-web/src/main/resources/images/" + websiteDTO.getId() + "/" + name);
-                BufferedOutputStream s = new BufferedOutputStream(new FileOutputStream(f));
-                FileCopyUtils.copy(file.getInputStream(),s);
-                s.close();
                 final SubpageDTO subpageDTO = new SubpageDTO();
-                BufferedImage img = ImageIO.read(f);
+                BufferedImage img = ImageIO.read(file.getInputStream());
+                img = ImageConverter.grayScale(img);
+                ImageIO.write(img, "png", f);
                 subpageDTO.setName(name);
                 subpageDTO.setResX(img.getWidth());
                 subpageDTO.setResY(img.getHeight());
@@ -80,7 +87,14 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
             File f = new File("ClickMapActivity-web/src/main/resources/images/" + website.getId() + "/" + name);
             BufferedImage img = ImageIO.read(f);
             ByteArrayOutputStream outStr = new ByteArrayOutputStream();
-            img = ImageConverter.grayScale(img);
+            final SubpageDTO subpage = mapper.convertToDTO(repo.findByNameAndWebsiteId(name,website.getId()));
+            Collection<ActivityDTO> activities = (Collection)cache.getSubpageActivities(subpage.getId());
+            List<PointsDTO> points = new ArrayList<>();
+            if(activities != null) {
+                activities.stream().forEach(a -> points.addAll((Collection) cache.getActivityPoints(a.getId())));
+            }
+            int [][] clickMatrix = ImageConverter.makeClickMatrix(points,img.getWidth(),img.getHeight());
+            img = ImageConverter.fillPointsMap(img,clickMatrix);
             ImageIO.write(img,"png",outStr);
             InputStream inputStream = new ByteArrayInputStream(outStr.toByteArray());
             IOUtils.copy(inputStream, response.getOutputStream());

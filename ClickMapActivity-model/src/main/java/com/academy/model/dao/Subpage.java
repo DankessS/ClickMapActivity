@@ -16,10 +16,10 @@ public class Subpage {
     private Integer resX;
     private Integer resY;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Website website;
 
-    @OneToMany(mappedBy = "subpage")
+    @OneToMany(mappedBy = "subpage", cascade = {CascadeType.ALL})
     private List<Activity> activityPoints;
 
     public Long getId() {
