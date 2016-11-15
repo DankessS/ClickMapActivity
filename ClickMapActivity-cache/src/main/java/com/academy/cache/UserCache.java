@@ -1,8 +1,15 @@
 package com.academy.cache;
 
+import org.hibernate.mapping.Array;
 import org.springframework.stereotype.Component;
+import sun.text.CollatorUtilities;
 
 import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static java.util.stream.StreamSupport.stream;
 
 /**
  * Created by Daniel Palonek on 2016-09-16.
@@ -56,6 +63,18 @@ public class UserCache extends AbstractCacheSupplier {
 
     public void setSubpageActivities(Long subpageId, Iterable activities) {
         getMap(CacheConstants.ACTIVITIES).set(subpageId,activities);
+    }
+
+    public synchronized void addSubpageActivity(Long subpageId, Object activity) {
+        Iterable values = (Iterable)getMap(CacheConstants.ACTIVITIES).get(subpageId);
+        if(values != null) {
+            List l = (List)StreamSupport.stream(values.spliterator(),false).collect(Collectors.toList());
+            l.add(activity);
+            getMap(CacheConstants.ACTIVITIES).set(subpageId, l);
+        } else {
+            List c = Arrays.asList(activity);
+            getMap(CacheConstants.ACTIVITIES).set(subpageId, c);
+        }
     }
 
     public Iterable getSubpageActivities(Long subpageId) {

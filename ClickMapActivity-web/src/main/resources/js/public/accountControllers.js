@@ -25,6 +25,23 @@ accountControllers.controller('AccountController', ['$scope', '$routeParams', '$
     $scope.thirdEmpty = true;
     $scope.fourthEmpty = true;
 
+    document.body.addEventListener("click", logActivity, false);
+
+    function logActivity(e) {
+        var x = e.clientX;
+        var y = e.clientY;
+        var w = $(document).width();
+        var h = $(document).height();
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/activities/log/www.clickmapactivity.com/Register/" + w + "x" + h, false);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            points: [
+                x + ";" + y
+            ]
+        }));
+    }
+
     $scope.checkUsernameValidate = function() {
         AccountService.checkIfAccountExist({username: $scope.username}, function (rsp) {
                 $scope.isUserNameExisted = rsp.value;

@@ -8,7 +8,8 @@ var mainApp = angular.module("mainApp", ['ngRoute', 'ngAnimate', 'IndexControlle
 mainApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
     when('/register', {
-        templateUrl: '/public/register.html'
+        templateUrl: '/public/register.html',
+        controller: 'AccountController'
     }).
     when('/main', {
         templateUrl: '/public/main.html',

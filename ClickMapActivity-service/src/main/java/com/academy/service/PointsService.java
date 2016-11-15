@@ -16,11 +16,11 @@ public class PointsService extends AbstractService<Points,PointsDTO,PointsRepo,P
 
     private static final Logger LOGGER = LogManager.getLogger(PointsService.class);
 
-    public void addPointsCouple(Long activityId, String pointsCouple) {
+    public Points addPointsCouple(Long activityId, String pointsCouple) {
         PointsDTO pointsDTO = new PointsDTO();
         pointsDTO.setActivityId(activityId);
         pointsDTO.setPairValue(pointsCouple);
-        repo.save(mapper.convertToDAO(pointsDTO));
+        return repo.save(mapper.convertToDAO(pointsDTO));
     }
 
     public Iterable<PointsDTO> getByActivityId(Long activityId) {

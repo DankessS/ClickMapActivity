@@ -82,11 +82,6 @@ public class ImageConverter {
             String indexes [] = ((PointsDTO)p).getPairValue().split(";");
             clickMatrix[Integer.parseInt(indexes[0])][Integer.parseInt(indexes[1])] += 1;
         });
-//        for(int i=0 ; i<300; i++) {
-//            for(int j = 0; j<400;j++) {
-//                clickMatrix[i][j] = true;
-//            }
-//        }
         return clickMatrix;
     }
 
