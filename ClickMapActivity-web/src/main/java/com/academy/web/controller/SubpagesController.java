@@ -52,10 +52,10 @@ public class SubpagesController extends AbstractController<Subpage, SubpageDTO, 
         return cache.getWebsiteSubpages(website.getId());
     }
 
-    @RequestMapping(value = "/images/{name:.+}/{dateFrom}/{dateTo}", method = RequestMethod.GET)
-    public void getSubpageImage(@PathVariable("name") String name,
-                                @PathVariable("dateFrom") String dateFrom,
-                                @PathVariable("dateTo") String dateTo,
+    @RequestMapping(value = "/images/get", method = RequestMethod.GET)
+    public void getSubpageImage(@RequestParam("name") String name,
+                                @RequestParam("dateFrom") String dateFrom,
+                                @RequestParam("dateTo") String dateTo,
                                 HttpServletResponse response) {
         service.getImage(name, dateFrom, dateTo, response);
     }

@@ -49,10 +49,7 @@
                         <a ng-click="redirectToImage(s.name)" title="{{s.name}}" class="zoom"
                            data-title="{{s.name}}" data-type="image"
                            data-toggle="lightbox">
-                            <img src="/subpages/images/{{s.name}}/{{getDateFrom(1)}}/{{getDateTo()}}" alt="{{s.name}}"/>
-                            <div ng-if="isFileLoaded">
-                                <div class="loader" id="circleLoader"></div>
-                            </div>
+                            <img ng-src="/subpages/images/get?dateFrom={{dateFrom}}&dateTo={{dateTo}}&name={{s.name}}" alt="{{s.name}}"/>
                             <span class="overlay"><i class="glyphicon glyphicon-fullscreen"></i></span>
                         </a>
                     </div>

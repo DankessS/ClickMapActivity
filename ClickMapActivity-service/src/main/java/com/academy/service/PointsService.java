@@ -8,6 +8,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 /**
  * Created by Daniel Palonek on 2016-08-19.
  */
@@ -25,6 +27,10 @@ public class PointsService extends AbstractService<Points,PointsDTO,PointsRepo,P
 
     public Iterable<PointsDTO> getByActivityId(Long activityId) {
         return mapper.convertToDTO(repo.findByActivityId(activityId));
+    }
+
+    public Iterable<PointsDTO> getByActivityIds(Set<Long> activityIds) {
+        return  mapper.convertToDTO(repo.findByActivityIdIn(activityIds));
     }
 
 }

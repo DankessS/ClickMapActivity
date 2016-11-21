@@ -15,6 +15,8 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
         $scope.dateTo = moment().format("YYYY-MM-DD HH:mm:ss");
         $scope.dateFrom = moment().subtract(1, 'hours').format("YYYY-MM-DD HH:mm:ss");
 
+        $scope.img = {};
+
         // var d1 = new Date();
         // var d2 = new Date();
         // d2.setHours(d1.getHours() - 1);
@@ -71,20 +73,29 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
             return d.toISOString();
         };
 
+        $('#datetimepicker6').on('dp.change', function(e) {
+            $scope.dateFrom = e.date.format(("YYYY-MM-DD HH:mm:ss"))    ;
+        });
+
+        $('#datetimepicker7').on('dp.change', function(e) {
+            $scope.dateTo = e.date.format(("YYYY-MM-DD HH:mm:ss"))    ;
+        });
+        
         $scope.getSubpageImage = function (name) {
+            $scope.isFileLoaded = false;
             $http({
                 method: 'GET',
-                url: '/subpages/images/name/dateFrom/dateTo',
-                params: {name: name,
+                url: '/subpages/images/get',
+                params: {
+                    name: name,
                     dateFrom: $scope.dateFrom,
-                    dateTo: $scope.dateTo},
+                    dateTo: $scope.dateTo
+                },
                 responseType: 'arraybuffer'
             })
                 .then(function (response) {
-                    console.log(response);
-                    var str = _arrayBufferToBase64(response.data);
-                    console.log(str);
-                    // str is base64 encoded.
+                    $scope.img = _arrayBufferToBase64(response.data);
+                    $scope.isFileLoaded = true;
                 }, function (response) {
                     console.error('error in getting static img.');
                 });

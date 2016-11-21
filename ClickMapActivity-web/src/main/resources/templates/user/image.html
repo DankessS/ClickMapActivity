@@ -23,7 +23,7 @@
 
 </style>
 
-<div ng-bind="loadImageName()"></div>
+<div ng-init="loadImageName();getSubpageImage(imgName)"></div>
 <div id="panel">
     <div id="display-conf">
         <div class="container">
@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <div>From:</div>
                     <div class="input-group date" id="datetimepicker6">
-                        <input type='text' class="form-control" ng-model="dateFrom"/>
+                        <input type='text' id="inputDateFrom" class="form-control" ng-model="dateFrom"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar" style="color: #7a43b6"></span>
                 </span>
@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <div>To:</div>
                     <div class='input-group date' id='datetimepicker7'>
-                        <input type='text' class="form-control" ng-model="dateTo"/>
+                        <input type='text' id="inputDateTo" class="form-control" ng-model="dateTo"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar" style="color: #7a43b6"></span>
                 </span>
@@ -50,7 +50,9 @@
                 </div>
             </div>
             <div class='col-md-5'>
-                <button type="submit" id="addButton" ng-click="getSubpageImage(imgName)" class="btn btn-primary">REFRESH MAP</button>
+                <button type="submit" id="addButton" ng-click="getSubpageImage(imgName)" class="btn btn-primary">REFRESH
+                    MAP
+                </button>
             </div>
         </div>
         <script type="text/javascript">
@@ -74,6 +76,6 @@
         </script>
     </div>
 </div>
-<img data-ng-src="data:image/png;base64,{{img}}">
-<!--<center><img class="img-responsive" ng-src="/subpages/images/{{imgName}}/{{getDateFrom(2)}}//{{getDateTo()}}"-->
-             <!--alt="{{imgName}}"/></center>-->
+<div ng-if="isFileLoaded">
+    <center><img data-ng-src="data:image/png;base64,{{img}}"></center>
+</div>
