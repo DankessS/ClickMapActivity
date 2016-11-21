@@ -14,8 +14,10 @@ SubpagesServices.factory('SubpagesService', [
             },
 
             getSubpageImage: {
-                url: '/subpages/images/:name',
-                params: {name: "@name"},
+                url: '/subpages/images/:name/:dateFrom/:dateTo',
+                params: {name: "@name",
+                         dateFrom: "@dateFrom",
+                         dateTo: "@dateTo"},
                 method: 'GET',
                 responseType: 'arraybuffer'
             },

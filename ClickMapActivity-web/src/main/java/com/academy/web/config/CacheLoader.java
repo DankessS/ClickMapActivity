@@ -1,7 +1,10 @@
 package com.academy.web.config;
 
 import com.academy.cache.UserCache;
-import com.academy.model.dto.*;
+import com.academy.model.dto.ActivityDTO;
+import com.academy.model.dto.PointsDTO;
+import com.academy.model.dto.SubpageDTO;
+import com.academy.model.dto.WebsiteDTO;
 import com.academy.service.ActivityService;
 import com.academy.service.PointsService;
 import com.academy.service.SubpageService;
@@ -12,6 +15,9 @@ import org.springframework.stereotype.Component;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Created by Daniel Palonek on 2016-10-20.
@@ -54,7 +60,7 @@ public class CacheLoader {
                     s.setLastUpdateEpoch(new ArrayList<>(activities).get(activities.size() - 1).getDate().toInstant(ZoneOffset.UTC).getEpochSecond());
                 }
             });
-            cache.setWebsiteSubpages(w.getId(), subpages);
+            cache.setWebsiteSubpages(w.getId(), StreamSupport.stream(subpages.spliterator(), false).collect(Collectors.toMap(SubpageDTO::getId, Function.identity())));
         });
     }
 

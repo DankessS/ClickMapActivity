@@ -11,15 +11,13 @@ import com.academy.service.mappers.ActivityMapper;
 import com.academy.service.mappers.PointsMapper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.mapping.Array;
-import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -62,6 +60,9 @@ public class ActivityService extends AbstractService<Activity, ActivityDTO, Acti
         }
         points = adjustResolution(subpageDTO.getResX(), subpageDTO.getResY(), resolution, pointsList);
         Activity activity = insertActivity(receivedTime, subpageDTO.getId());
+        subpageDTO.setLastUpdateEpoch(activity.getDate().toInstant(ZoneOffset.UTC).getEpochSecond());
+        subpageDTO.setDisplays(new Long(((Collection)cache.getSubpageActivities(subpageDTO.getId())).size()));
+        cache.updateWebsiteSubpage(websiteDTO.getId(), subpageDTO.getId(), subpageDTO);
         if (activity == null) {
             LOGGER.warn("Could not insert activity for request from site [" + websiteName + "] and subpage [" + subpageName + "]");
             return;

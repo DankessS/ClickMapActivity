@@ -15,20 +15,20 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
@@ -51,7 +51,7 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
                 if(!f.exists())
                     f.mkdirs();
                 f = new File("ClickMapActivity-web/src/main/resources/images/" + websiteDTO.getId() + "/" + name);
-                final SubpageDTO subpageDTO = new SubpageDTO();
+                SubpageDTO subpageDTO = new SubpageDTO();
                 BufferedImage img = ImageIO.read(file.getInputStream());
                 img = ImageConverter.grayScale(img);
                 ImageIO.write(img, "png", f);
@@ -59,8 +59,8 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
                 subpageDTO.setResX(img.getWidth());
                 subpageDTO.setResY(img.getHeight());
                 subpageDTO.setWebsiteId(((WebsiteDTO) cache.getRequestedWebsite()).getId());
-                repo.save(mapper.convertToDAO(subpageDTO));
-                cache.setWebsiteSubpages(websiteDTO.getId(),mapper.convertToDTO(repo.getByWebsiteId(websiteDTO.getId())));
+                subpageDTO = mapper.convertToDTO(repo.save(mapper.convertToDAO(subpageDTO)));
+                cache.updateWebsiteSubpage(websiteDTO.getId(), subpageDTO.getId(), subpageDTO);
                 redAttr.addAttribute("websiteUrl", websiteDTO.getUrl());
                 return true;
             }catch(IOException e) {
@@ -81,9 +81,14 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
         return mapper.convertToDTO(repo.findByNameAndWebsiteId(name,websiteId));
     }
 
-    public void getImage(String name, HttpServletResponse response) {
+    public void getImage(String name, String dateFromChain, String dateToChain, HttpServletResponse response) {
         final WebsiteDTO website = (WebsiteDTO) cache.getRequestedWebsite();
+        if(website == null) {
+            return;
+        }
         try {
+            final LocalDateTime dateFrom = LocalDateTime.parse(dateFromChain.replace(" ", "T"));
+            final LocalDateTime dateTo = LocalDateTime.parse(dateToChain.replace(" ", "T"));
             File f = new File("ClickMapActivity-web/src/main/resources/images/" + website.getId() + "/" + name);
             BufferedImage img = ImageIO.read(f);
             ByteArrayOutputStream outStr = new ByteArrayOutputStream();
@@ -91,7 +96,9 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
             Collection<ActivityDTO> activities = (Collection)cache.getSubpageActivities(subpage.getId());
             List<PointsDTO> points = new ArrayList<>();
             if(activities != null) {
-                activities.stream().forEach(a -> points.addAll((Collection) cache.getActivityPoints(a.getId())));
+                activities.stream()
+                        .filter(a-> a.getDate().isAfter(dateFrom) && a.getDate().isBefore(dateTo))
+                        .forEach(a -> points.addAll((Collection) cache.getActivityPoints(a.getId())));
             }
             int [][] clickMatrix = ImageConverter.makeClickMatrix(points,img.getWidth(),img.getHeight());
             img = ImageConverter.fillPointsMap(img,clickMatrix);
@@ -100,7 +107,7 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
             IOUtils.copy(inputStream, response.getOutputStream());
             response.flushBuffer();
             inputStream.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.warn(e.getMessage());
         }
     }
@@ -113,7 +120,10 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
                 return false;
             }
             repo.deleteByNameAndWebsiteId(name,websiteId);
-            cache.setWebsiteSubpages(websiteId,getSubgapesForWebsiteId(websiteId));
+            cache.setWebsiteSubpages(websiteId,
+                    StreamSupport.stream(getSubgapesForWebsiteId(websiteId).spliterator(), true)
+                            .collect(Collectors.toMap(SubpageDTO::getId, Function.identity()))
+            );
             return true;
         } catch(Exception e) {
             LOGGER.warn(e.getMessage());

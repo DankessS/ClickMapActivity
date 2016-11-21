@@ -26,7 +26,10 @@
     "angular-modal-service": "latest",
     "angular-file-model": "latest",
     "bootstrap": "latest",
-    "jquery-circle-progress": "latest"
+    "moment": "latest",
+    "jquery": "latest",
+    "jquery-circle-progress": "latest",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.43"
   },
   "resolutions": {
     "angular": "1.5.5"

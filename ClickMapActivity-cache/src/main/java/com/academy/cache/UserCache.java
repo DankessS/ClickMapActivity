@@ -1,10 +1,7 @@
 package com.academy.cache;
 
-import org.hibernate.mapping.Array;
 import org.springframework.stereotype.Component;
-import sun.text.CollatorUtilities;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -49,12 +46,19 @@ public class UserCache extends AbstractCacheSupplier {
         return getUserContext().getOrDefault(CacheConstants.REQUESTED_WEBSITE,null);
     }
 
-    public void setWebsiteSubpages(Long websiteId, Iterable subpages) {
-        getMap(CacheConstants.WEBSITE_SUBPAGES).set(websiteId,subpages);
+    public void setWebsiteSubpages(Long websiteId, Map<Long, Object> subpages) {
+        getMap(CacheConstants.WEBSITE_SUBPAGES).set(websiteId, subpages);
     }
 
-    public Iterable getWebsiteSubpages(Long websiteId) {
-        return (Iterable)getMap(CacheConstants.WEBSITE_SUBPAGES).get(websiteId);
+    public void updateWebsiteSubpage(Long websiteId, Long subpageId, Object subpage) {
+        Map<Long, Object> subpages = (Map)getMap(CacheConstants.WEBSITE_SUBPAGES).get(websiteId);
+        subpages.put(subpageId, subpage);
+        getMap(CacheConstants.WEBSITE_SUBPAGES).set(websiteId, subpages);
+    }
+
+    public Iterable getWebsiteSubpages(Long key) {
+        Map<Long, Object> subpages = (Map)getMap(CacheConstants.WEBSITE_SUBPAGES).get(key);
+        return subpages.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
     }
 
     public void deleteWebsiteSubpages(Long websiteId) {
