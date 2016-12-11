@@ -6,6 +6,7 @@ import com.academy.model.dto.ActivityDTO;
 import com.academy.model.dto.PointsDTO;
 import com.academy.model.dto.SubpageDTO;
 import com.academy.model.dto.WebsiteDTO;
+import com.academy.repo.PointsRepo;
 import com.academy.repo.SubpageRepo;
 import com.academy.service.mappers.SubpageMapper;
 import com.academy.service.tools.ImageConverter;
@@ -42,6 +43,9 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
 
     @Autowired
     UserCache cache;
+
+    @Autowired
+    PointsService pointsService;
 
     public boolean saveSubpage(String name, MultipartFile file, RedirectAttributes redAttr) {
         WebsiteDTO websiteDTO = (WebsiteDTO)cache.getRequestedWebsite();
@@ -82,6 +86,7 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
     }
 
     public void getImage(String name, String dateFromChain, String dateToChain, HttpServletResponse response) {
+        final long start = System.currentTimeMillis();
         final WebsiteDTO website = (WebsiteDTO) cache.getRequestedWebsite();
         if(website == null) {
             return;
@@ -98,7 +103,7 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
             if(activities != null) {
                 activities.stream()
                         .filter(a-> a.getDate().isAfter(dateFrom) && a.getDate().isBefore(dateTo))
-                        .forEach(a -> points.addAll((Collection) cache.getActivityPoints(a.getId())));
+                        .forEach(a -> points.addAll((Collection)cache.getActivityPoints(a.getId())));
             }
             int [][] clickMatrix = ImageConverter.makeClickMatrix(points,img.getWidth(),img.getHeight());
             img = ImageConverter.fillPointsMap(img,clickMatrix);
@@ -107,6 +112,8 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
             IOUtils.copy(inputStream, response.getOutputStream());
             response.flushBuffer();
             inputStream.close();
+            final long end = System.currentTimeMillis();
+            LOGGER.info("Fetched image in: " +  (end - start) + "milis");
         } catch (Exception e) {
             LOGGER.warn(e.getMessage());
         }

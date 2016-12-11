@@ -52,6 +52,9 @@ public class UserCache extends AbstractCacheSupplier {
 
     public void updateWebsiteSubpage(Long websiteId, Long subpageId, Object subpage) {
         Map<Long, Object> subpages = (Map)getMap(CacheConstants.WEBSITE_SUBPAGES).get(websiteId);
+        if(subpages == null) {
+            subpages = new HashMap<>();
+        }
         subpages.put(subpageId, subpage);
         getMap(CacheConstants.WEBSITE_SUBPAGES).set(websiteId, subpages);
     }

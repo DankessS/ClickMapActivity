@@ -14,8 +14,74 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
         $scope.displays = {};
         $scope.dateTo = moment().format("YYYY-MM-DD HH:mm:ss");
         $scope.dateFrom = moment().subtract(1, 'hours').format("YYYY-MM-DD HH:mm:ss");
+        $scope.granulation = {};
+        $scope.data = {};
 
         $scope.img = {};
+
+        $scope.options = {
+            chart: {
+                type: 'multiBarChart',
+                height: 400,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 45,
+                    left: 45
+                },
+                clipEdge: true,
+                //staggerLabels: true,
+                duration: 500,
+                stacked: true,
+                xAxis: {
+                    axisLabel: 'Date (day)',
+                    showMaxMin: false,
+                    tickFormat: function(d){
+                        return d3.format(',f')(d);
+                    }
+                },
+                yAxis: {
+                    axisLabel: 'Clicks',
+                    axisLabelDistance: -20,
+                    tickFormat: function(d){
+                        return d3.format(',.1f')(d);
+                    }
+                },
+                color: ['#7a43b6']
+            }
+        };
+
+        function generateData() {
+            return stream_layers(1,100+Math.random()*50,.1).map(function(data, i) {
+                return {
+                    key: 'Stream',
+                    values: data
+                };
+            });
+        }
+
+        function stream_layers(n, m, o) {
+            if (arguments.length < 3) o = 0;
+            function bump(a) {
+                var x = 1 / (.1 + Math.random()),
+                    y = 2 * Math.random() - .5,
+                    z = 10 / (.1 + Math.random());
+                for (var i = 0; i < m; i++) {
+                    var w = (i / m - y) * z;
+                    a[i] += x * Math.exp(-w * w);
+                }
+            }
+            return d3.range(n).map(function() {
+                var a = [], i;
+                for (i = 0; i < m; i++) a[i] = o + o * Math.random();
+                for (i = 0; i < 5; i++) bump(a);
+                return a.map(stream_index);
+            });
+        }
+
+        function stream_index(d, i) {
+            return {x: i, y: Math.max(0, d)};
+        }
 
         // var d1 = new Date();
         // var d2 = new Date();
@@ -99,6 +165,14 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
                 }, function (response) {
                     console.error('error in getting static img.');
                 });
+        };
+
+        $scope.getChartData = function() {
+            SubpagesService.getChartData({dateFrom: $scope.dateFrom,
+                                          dateTo: $scope.dateTo,
+                                          gran: $scope.granulation}, function (rsp) {
+                $scope.data = rsp;
+            })
         };
 
 

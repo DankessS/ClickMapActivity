@@ -3,7 +3,7 @@
  */
 var mainApp = angular.module("mainApp", ['ngRoute', 'ngAnimate', 'IndexControllers', 'IndexServices',
     'AccountControllers', 'WebsitesControllers', 'WebsitesServices', 'SubpagesControllers', 'SubpagesServices','AccountServices',
-    'ui.grid', 'ui.grid.pagination']);
+    'ui.grid', 'ui.grid.pagination', 'nvd3']);
 
 mainApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.

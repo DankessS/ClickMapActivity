@@ -10,6 +10,7 @@ import com.academy.service.PointsService;
 import com.academy.service.SubpageService;
 import com.academy.service.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneOffset;
@@ -39,6 +40,7 @@ public class CacheLoader {
     @Autowired
     PointsService pointsService;
 
+    @Async
     public void load(final String username) {
         cache.setLoggedUsername(username);
         Iterable<WebsiteDTO> websites = websiteService.getUserWebsites();
@@ -48,7 +50,7 @@ public class CacheLoader {
             subpages.forEach(s-> {
                 Collection<ActivityDTO> activities = (Collection)activityService.getBySubpageId(s.getId());
                 cache.setSubpageActivities(s.getId(), activities);
-                activities.stream()
+                activities.parallelStream()
                         .sorted((a1,a2) -> a1.getDate().compareTo(a2.getDate()))
                         .forEach(a-> {
                             Iterable<PointsDTO> points = pointsService.getByActivityId(a.getId());

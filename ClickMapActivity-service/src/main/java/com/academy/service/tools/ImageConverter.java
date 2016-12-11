@@ -1,6 +1,8 @@
 package com.academy.service.tools;
 
 import com.academy.model.dto.PointsDTO;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,25 +14,17 @@ import java.util.List;
 public class ImageConverter {
 
     public static BufferedImage grayScale(BufferedImage original) {
-
-        int alpha, red, green, blue;
-        int newPixel;
-
+        int alpha, red, green, blue, newPixel;
         BufferedImage avg_gray = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
-        int[] avgLUT = new int[766];
-        for(int i=0; i<avgLUT.length; i++) avgLUT[i] = (int) (i / 3);
-
         for(int i=0; i<original.getWidth(); i++) {
             for(int j=0; j<original.getHeight(); j++) {
-
                 // Get pixels by R, G, B
                 alpha = new Color(original.getRGB(i, j)).getAlpha();
                 red = new Color(original.getRGB(i, j)).getRed();
                 green = new Color(original.getRGB(i, j)).getGreen();
                 blue = new Color(original.getRGB(i, j)).getBlue();
 
-                newPixel = red + green + blue;
-                newPixel = avgLUT[newPixel];
+                newPixel = (red + green + blue)/3;
                 // Return back to original format
                 newPixel = colorToRGB(alpha, newPixel, newPixel, newPixel);
 
@@ -59,7 +53,7 @@ public class ImageConverter {
 
     private static void drawPoint(Graphics2D graphics, int x, int y, int loop) {
         for(int i = 0; i<loop; i++) {
-            graphics.fillOval(x + 5, y + 5, 10, 10);
+            graphics.fillOval(x - 5, y - 5, 10, 10);
         }
     }
 

@@ -82,7 +82,7 @@
             <p class="well-text"><span class="glyphicon glyphicon-th"></span></p>
             <p class="well-text"><span ng-bind="w.url"></span></p>
             <p class="delete-btn">
-                <span class ="glyphicon glyphicon-remove" data-toggle="tooltip" title="Delete website" ng-click="deleteWebsite(w)"></span>
+                <span class ="glyphicon glyphicon-remove" data-toggle="tooltip" title="Delete website" ng-click="deleteWebsite(w);$event.stopPropagation()"></span>
             </p>
         </div>
     </div>

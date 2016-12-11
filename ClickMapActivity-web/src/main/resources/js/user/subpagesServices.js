@@ -13,15 +13,14 @@ SubpagesServices.factory('SubpagesService', [
                 isArray: true
             },
 
-            getSubpageImage: {
-                url: '/subpages/images/:name/:dateFrom/:dateTo',
-                params: {name: "@name",
-                         dateFrom: "@dateFrom",
-                         dateTo: "@dateTo"},
-                method: 'GET',
-                responseType: 'arraybuffer'
+            getChartData: {
+                url: '/subpages/chart/:dateFrom/:dateTo/:gran',
+                params: {dateFrom: "@dateFrom",
+                         dateTo: "@dateTo",
+                         gran: "@gran"},
+                method: 'GET'
             },
-            
+
             deleteSubpage: {
                 url: '/subpages/delete/:name',
                 params: {name: '@name'},
