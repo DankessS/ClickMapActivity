@@ -1,6 +1,6 @@
 <style>
     #display-conf {
-        width: 60%;
+        width: 80%;
         font-family: Verdana, Geneva, sans-serif;
         font-size: 1.4em;
         text-align: left;
@@ -10,7 +10,7 @@
     }
 
     #panel {
-        padding-left: 25%;
+        padding-left: 17%;
     }
 
     #addButton {
@@ -23,8 +23,7 @@
 
 </style>
 
-<div ng-init="loadImageName();getSubpageImage(imgName)"></div>
-<div id="panel">
+<div id="panel" ng-init="loadImageName();getSubpageImage(imgName)">
     <div id="display-conf">
         <div class="container">
             <div class='col-md-5' style="width:23%">
@@ -53,15 +52,16 @@
                 <div class="form-group">
                     <div>Granulation:</div>
                     <div class="form-group">
-                        <select class="form-control" id="sel1">
-                            <option>day</option>
-                            <option>hour</option>
+                        <select class="form-control" id="sel1" ng-model="granulation"
+                                ng-options="gt for gt in granulationTypes"
+                                ng-init="granulation = granulationTypes[0]">
                         </select>
                     </div>
                 </div>
             </div>
-            <div class='col-md-5'>
-                <button type="submit" id="addButton" ng-click="getSubpageImage(imgName)" class="btn btn-primary">REFRESH
+            <div class='col-md-5' style="width:15%;padding-top:1.5%">
+                <button type="submit" id="addButton" ng-click="getSubpageImage(imgName);getChartData(imgName)"
+                        class="btn btn-primary">REFRESH
                     MAP
                 </button>
             </div>
@@ -87,7 +87,8 @@
         </script>
     </div>
 </div>
-<nvd3 options="options" data="data"></nvd3>
+<nvd3 ng-init="getChartData(imgName)" options="options" data="data" api="api"></nvd3>
+<br><br>
 <div ng-if="isFileLoaded">
     <center><img data-ng-src="data:image/png;base64,{{img}}"></center>
 </div>

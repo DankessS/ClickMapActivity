@@ -13,8 +13,9 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
         $scope.imgName = {};
         $scope.displays = {};
         $scope.dateTo = moment().format("YYYY-MM-DD HH:mm:ss");
-        $scope.dateFrom = moment().subtract(1, 'hours').format("YYYY-MM-DD HH:mm:ss");
+        $scope.dateFrom = moment().subtract(7, 'days').format("YYYY-MM-DD HH:mm:ss");
         $scope.granulation = {};
+        $scope.granulationTypes = ["day","hour"];
         $scope.data = {};
 
         $scope.img = {};
@@ -35,16 +36,13 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
                 stacked: true,
                 xAxis: {
                     axisLabel: 'Date (day)',
-                    showMaxMin: false,
-                    tickFormat: function(d){
-                        return d3.format(',f')(d);
-                    }
+                    showMaxMin: false
                 },
                 yAxis: {
                     axisLabel: 'Clicks',
                     axisLabelDistance: -20,
                     tickFormat: function(d){
-                        return d3.format(',.1f')(d);
+                        return d3.format('')(d);
                     }
                 },
                 color: ['#7a43b6']
@@ -53,6 +51,7 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
 
         function generateData() {
             return stream_layers(1,100+Math.random()*50,.1).map(function(data, i) {
+                console.info(data);
                 return {
                     key: 'Stream',
                     values: data
@@ -82,12 +81,6 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
         function stream_index(d, i) {
             return {x: i, y: Math.max(0, d)};
         }
-
-        // var d1 = new Date();
-        // var d2 = new Date();
-        // d2.setHours(d1.getHours() - 1);
-        // $scope.dateFrom = d1.toLocaleString();
-        // $scope.dateFrom = d2.toLocaleString();
 
         SubpagesService.getByWebsiteId(function (subpages) {
             $scope.subpages = subpages;
@@ -167,12 +160,23 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
                 });
         };
 
-        $scope.getChartData = function() {
-            SubpagesService.getChartData({dateFrom: $scope.dateFrom,
-                                          dateTo: $scope.dateTo,
-                                          gran: $scope.granulation}, function (rsp) {
-                $scope.data = rsp;
+        $scope.getChartData = function (name) {
+            $http({
+                method: 'GET',
+                url: '/subpages/chart',
+                params: {
+                    dateFrom: $scope.dateFrom,
+                    dateTo: $scope.dateTo,
+                    gran: $scope.granulation,
+                    name: name
+                },
+                isArray: true
             })
+                .then(function (response) {
+                    $scope.data = response.data;
+                }, function (response) {
+                    console.error('error fetchin response with chart data.');
+                });
         };
 
 

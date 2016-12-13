@@ -1,12 +1,13 @@
 package com.academy.service;
 
 import com.academy.cache.UserCache;
+import com.academy.model.ChartData;
+import com.academy.model.ChartResponseData;
 import com.academy.model.dao.Subpage;
 import com.academy.model.dto.ActivityDTO;
 import com.academy.model.dto.PointsDTO;
 import com.academy.model.dto.SubpageDTO;
 import com.academy.model.dto.WebsiteDTO;
-import com.academy.repo.PointsRepo;
 import com.academy.repo.SubpageRepo;
 import com.academy.service.mappers.SubpageMapper;
 import com.academy.service.tools.ImageConverter;
@@ -25,11 +26,12 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
@@ -117,6 +119,74 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
         } catch (Exception e) {
             LOGGER.warn(e.getMessage());
         }
+    }
+
+    public Iterable<ChartResponseData> getChartData(String dateFromChain, String dateToChain, String granulation, String name) {
+        final WebsiteDTO website = (WebsiteDTO) cache.getRequestedWebsite();
+        if(website == null) {
+            return Collections.EMPTY_LIST;
+        }
+        final SubpageDTO subpage = mapper.convertToDTO(repo.findByNameAndWebsiteId(name, website.getId()));
+        if (subpage == null) {
+            return Collections.EMPTY_LIST;
+        }
+        if("day".equals(granulation)) {
+            return getChartResponseDaily(dateFromChain, dateToChain, subpage);
+        } else if("hour".equals(granulation)) {
+            return getChartResponseHourly(dateFromChain, dateToChain, subpage);
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    private Iterable<ChartResponseData> getChartResponseHourly(String dateFromChain, String dateToChain, SubpageDTO subpage) {
+        Collection<ActivityDTO> activities = (Collection)cache.getSubpageActivities(subpage.getId());
+        final LocalDateTime dateFrom = LocalDateTime.parse(dateFromChain.substring(0,dateFromChain.length() - 6), DateTimeFormatter.ofPattern("yyyy-MM-dd kk"));
+        final LocalDateTime dateTo = LocalDateTime.parse(dateToChain.substring(0,dateFromChain.length() - 6), DateTimeFormatter.ofPattern("yyyy-MM-dd kk"));
+        Map<LocalDateTime, Long> periodOccurances = activities.stream()
+                .filter(a-> a.getDate().isAfter(dateFrom) && a.getDate().isBefore(dateTo))
+                .map(a -> LocalDateTime.parse(a.getDate().toString().replace("T", " ").substring(0, a.getDate().toString().length() - (a.getDate().toString().length() > 16 ? 6 : 3)), DateTimeFormatter.ofPattern("yyyy-MM-dd kk")))
+                .collect(Collectors.groupingBy(a -> a, Collectors.counting()));
+        long hoursCount = ChronoUnit.HOURS.between(dateFrom, dateTo);
+        List<ChartData> values = new LinkedList<>();
+        for(long i = 0; i < hoursCount + 1; i++) {
+            String incrementedDate = dateFrom.plusHours(i).toString();
+            LocalDateTime parsedDate = magicDateParse(incrementedDate);
+            values.add(new ChartData(parsedDate.toString(), 0));
+        }
+        for(long i = 0; i < values.size(); i++) {
+            String incrementedDate = dateFrom.plusHours(i).toString();
+            LocalDateTime parsedDate = magicDateParse(incrementedDate);
+            if (periodOccurances.get(parsedDate) != null) {
+                values.get(Math.toIntExact(i)).setY(periodOccurances.get(parsedDate));
+            }
+        }
+        return Collections.singletonList((new ChartResponseData("Clicks", values)));
+    }
+
+    private LocalDateTime magicDateParse(String dateToParse) {
+        return LocalDateTime.parse(dateToParse.replace("T", " ").substring(0, dateToParse.length() - (dateToParse.length() > 16 ? 6 : 3)), DateTimeFormatter.ofPattern("yyyy-MM-dd kk"));
+    }
+
+    private Iterable<ChartResponseData> getChartResponseDaily(String dateFromChain, String dateToChain, SubpageDTO subpage) {
+        Collection<ActivityDTO> activities = (Collection)cache.getSubpageActivities(subpage.getId());
+        final LocalDateTime dateFrom = LocalDateTime.parse(dateFromChain.replace(" ", "T"));
+        final LocalDateTime dateTo = LocalDateTime.parse(dateToChain.replace(" ", "T"));
+        Map<LocalDate, Long> periodOccurances = activities.stream()
+                .filter(a-> a.getDate().isAfter(dateFrom) && a.getDate().isBefore(dateTo))
+                .collect(Collectors.groupingBy(a -> a.getDate().toLocalDate(), Collectors.counting()));
+        long daysCount = ChronoUnit.DAYS.between(dateFrom, dateTo);
+        List<ChartData> values = new LinkedList<>();
+        for(long i = 0; i < daysCount + 1; i++) {
+            values.add(new ChartData(dateFrom.plusDays(i).toLocalDate().toString(), 0));
+        }
+        values.add(new ChartData(dateTo.toLocalDate().toString(), 0));
+        for(long i = 0; i < values.size(); i++) {
+            final LocalDate date = dateFrom.plusDays(i).toLocalDate();
+            if (periodOccurances.get(date) != null) {
+                values.get(Math.toIntExact(i)).setY(periodOccurances.get(date));
+            }
+        }
+        return Collections.singletonList((new ChartResponseData("Clicks", values)));
     }
 
     public boolean delete(final String name) {

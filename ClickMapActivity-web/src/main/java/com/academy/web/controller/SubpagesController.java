@@ -1,6 +1,7 @@
 package com.academy.web.controller;
 
 import com.academy.cache.UserCache;
+import com.academy.model.ChartResponseData;
 import com.academy.model.ValueWrapper;
 import com.academy.model.dao.Subpage;
 import com.academy.model.dto.SubpageDTO;
@@ -14,6 +15,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +26,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Map;
 
 /**
  * Created by Daniel Palonek on 2016-10-06.
@@ -58,6 +61,14 @@ public class SubpagesController extends AbstractController<Subpage, SubpageDTO, 
                                 @RequestParam("dateTo") String dateTo,
                                 HttpServletResponse response) {
         service.getImage(name, dateFrom, dateTo, response);
+    }
+
+    @RequestMapping(value = "/chart", method = RequestMethod.GET)
+    public Iterable<ChartResponseData> getChartData(@RequestParam("dateFrom") String dateFrom,
+                                                    @RequestParam("dateTo") String dateTo,
+                                                    @RequestParam("gran") String granulation,
+                                                    @RequestParam("name") String name) {
+        return service.getChartData(dateFrom, dateTo, granulation, name);
     }
 
     @RequestMapping(value = "/delete/{name}", method = RequestMethod.DELETE)

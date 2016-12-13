@@ -14,11 +14,13 @@ SubpagesServices.factory('SubpagesService', [
             },
 
             getChartData: {
-                url: '/subpages/chart/:dateFrom/:dateTo/:gran',
+                url: '/subpages/chart',
                 params: {dateFrom: "@dateFrom",
                          dateTo: "@dateTo",
-                         gran: "@gran"},
-                method: 'GET'
+                         gran: "@gran",
+                         name: "@name"},
+                method: 'GET',
+                isArray: true
             },
 
             deleteSubpage: {
