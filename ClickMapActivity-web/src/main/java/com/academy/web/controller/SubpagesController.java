@@ -7,26 +7,16 @@ import com.academy.model.dao.Subpage;
 import com.academy.model.dto.SubpageDTO;
 import com.academy.model.dto.WebsiteDTO;
 import com.academy.service.SubpageService;
-import com.academy.service.tools.ImageConverter;
 import com.academy.web.config.RedirectUrls;
-import com.hazelcast.nio.IOUtil;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.Map;
 
 /**
  * Created by Daniel Palonek on 2016-10-06.
@@ -53,6 +43,13 @@ public class SubpagesController extends AbstractController<Subpage, SubpageDTO, 
     public Iterable<SubpageDTO> getByWebsiteId() {
         final WebsiteDTO website = (WebsiteDTO) cache.getRequestedWebsite();
         return cache.getWebsiteSubpages(website.getId());
+    }
+
+    @RequestMapping(value = "/capture/{subpageUrl:.+}", method = RequestMethod.POST)
+    public ModelAndView captureSubpage(@PathVariable String subpageUrl) {
+        return new ModelAndView(service.captureSubpage(subpageUrl) ?
+                "redirect:/user/#/subpages/{websiteUrl}"
+                : RedirectUrls.ERROR_COULD_NOT_UPLOAD_SUBPAGE);
     }
 
     @RequestMapping(value = "/images/get", method = RequestMethod.GET)

@@ -222,7 +222,7 @@
     margin: 10% 0% 0% 35%;
 }
 
-#addBtn {
+#addBtn, #captBtn {
     background-color: #7a43b6;
     color:white;
     margin: 5% 0% 10% 25%;

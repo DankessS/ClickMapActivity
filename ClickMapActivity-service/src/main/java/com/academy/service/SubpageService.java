@@ -23,7 +23,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,7 +34,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
@@ -77,6 +79,10 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
         }
         redAttr.addFlashAttribute("message", "Could not upload subpage. Please try again.");
         return false;
+    }
+
+    public boolean captureSubpage(String subpageUrl) {
+        return true;
     }
 
     public Iterable<SubpageDTO> getSubgapesForWebsiteId(final Long websiteId) {
@@ -157,7 +163,10 @@ public class SubpageService extends AbstractService<Subpage,SubpageDTO,SubpageRe
             String incrementedDate = dateFrom.plusHours(i).toString();
             LocalDateTime parsedDate = magicDateParse(incrementedDate);
             if (periodOccurances.get(parsedDate) != null) {
+                values.get(Math.toIntExact(i)).setX(incrementedDate.substring(incrementedDate.length() - 5, incrementedDate.length()));
                 values.get(Math.toIntExact(i)).setY(periodOccurances.get(parsedDate));
+            } else {
+                values.get(Math.toIntExact(i)).setX(incrementedDate.substring(incrementedDate.length() - 5, incrementedDate.length()));
             }
         }
         return Collections.singletonList((new ChartResponseData("Clicks", values)));

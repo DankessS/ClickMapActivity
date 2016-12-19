@@ -13,6 +13,12 @@ SubpagesServices.factory('SubpagesService', [
                 isArray: true
             },
 
+            captureSubpage: {
+                url: '/subpages/capture/:subpageUrl',
+                method: 'POST',
+                params: {subpageUrl: "@subpageUrl"}
+            },
+
             getChartData: {
                 url: '/subpages/chart',
                 params: {dateFrom: "@dateFrom",

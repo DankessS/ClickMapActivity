@@ -5,8 +5,6 @@ import com.academy.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
-
 /**
  * Created by Daniel Palonek on 2016-10-25.
  */

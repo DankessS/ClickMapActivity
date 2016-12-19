@@ -9,8 +9,5 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-thymeleaf',
             'mysql:mysql-connector-java',
             'com.hazelcast:hazelcast:3.7.1'
-    compile project(':ClickMapActivity-model')
-    compile project(':ClickMapActivity-repo')
     compile project(':ClickMapActivity-service')
-    compile project(':ClickMapActivity-cache')
 }

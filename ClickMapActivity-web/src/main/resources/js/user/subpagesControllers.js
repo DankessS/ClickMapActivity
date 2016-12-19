@@ -8,6 +8,7 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
         $scope.shouldShow = true;
         $scope.subpages = {};
         $scope.isSubpageExists = false;
+        $scope.isCaptureMode = false;
         $scope.websiteUrl = window.location.href.split("/subpages/")[1];
         $scope.isFileLoaded = false;
         $scope.imgName = {};
@@ -35,7 +36,7 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
                 duration: 500,
                 stacked: true,
                 xAxis: {
-                    axisLabel: 'Date (day)',
+                    axisLabel: 'Date (hour)',
                     showMaxMin: false
                 },
                 yAxis: {
@@ -178,8 +179,11 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
                     console.error('error fetchin response with chart data.');
                 });
         };
-
-
+        
+        $scope.captureSubpage = function (url) {
+            SubpagesService.captureSubpage({subpageUrl: url})
+        };
+        
         function _arrayBufferToBase64(buffer) {
             var binary = '';
             var bytes = new Uint8Array(buffer);

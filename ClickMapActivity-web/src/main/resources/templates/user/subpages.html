@@ -94,7 +94,10 @@
                                        ng-model="subpageName" name="subpageName" ng-change="checkIfExists()" required>
                                 <span ng-show="isSubpageExists" class="glyphicon glyphicon-remove" style="color:red">Subpage with that name already exists. Please type different.</span>
                             </div>
-                            <button id="addBtn" type="submit" ng-disabled="isSubpageExists" class="btn btn-default">ADD
+                            <button id="addBtn" type="submit" ng-show="!isCaptureMode" ng-disabled="isSubpageExists" class="btn btn-default">ADD
+                                SUBPAGE
+                            </button>
+                            <button id="captBtn" ng-click="captureSubpage(subpageUrl)" ng-show="isCaptureMode" ng-disabled="isSubpageExists" class="btn btn-default">ADD
                                 SUBPAGE
                             </button>
                         </form>
