@@ -46,8 +46,9 @@ public class SubpagesController extends AbstractController<Subpage, SubpageDTO, 
     }
 
     @RequestMapping(value = "/capture/{subpageUrl:.+}", method = RequestMethod.POST)
-    public ModelAndView captureSubpage(@PathVariable String subpageUrl) {
-        return new ModelAndView(service.captureSubpage(subpageUrl) ?
+    public ModelAndView captureSubpage(@PathVariable String subpageUrl,
+                                       RedirectAttributes redAttrs) {
+        return new ModelAndView(service.captureSubpage(subpageUrl, redAttrs) ?
                 "redirect:/user/#/subpages/{websiteUrl}"
                 : RedirectUrls.ERROR_COULD_NOT_UPLOAD_SUBPAGE);
     }

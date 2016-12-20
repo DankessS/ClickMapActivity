@@ -181,6 +181,7 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
         };
         
         $scope.captureSubpage = function (url) {
+            console.info("Worked!")
             SubpagesService.captureSubpage({subpageUrl: url})
         };
         
