@@ -76,17 +76,17 @@
                         </a>
                     </div>
                     <div id="subpage-form" ng-show="!shouldShow">
-                        <form name="uploadForm" method="POST" action="/subpages/add" enctype="multipart/form-data">
+                        <form name="uploadForm" method="POST" action="/subpages/add" enctype="multipart/form-data" novalidate>
                             <div id="file-browse">
                                 <label class="btn btn-default btn-file"
-                                       style="background-color: #7a43b6; color:white">
-                                    Browse <input type="file" style="display: none;" name="file" file-model="file"
+                                       style="background-color: #7a43b6; color:white" ng-disabled="isCaptureMode">
+                                    Browse <input type="file" style="display: none;" name="file" file-model="file" ng-disabled="isCaptureMode"
                                                   required>
                             </div>
                             <div id="subpage-url">
                                 <label for="url">Subpage url:</label>
                                 <input type="text" class="form-control" id="surl" style="width:70%"
-                                       ng-model="subpageUrl" name="subpageUrl">
+                                       ng-model="subpageUrl" ng-change="setCaptureMode()" name="subpageUrl">
                             </div>
                             <div id="subpage-name">
                                 <label for="url">Subpage name:</label>
@@ -94,10 +94,10 @@
                                        ng-model="subpageName" name="subpageName" ng-change="checkIfExists()" required>
                                 <span ng-show="isSubpageExists" class="glyphicon glyphicon-remove" style="color:red">Subpage with that name already exists. Please type different.</span>
                             </div>
-                            <button id="addBtn" type="submit" ng-show="!isCaptureMode" ng-disabled="isSubpageExists" class="btn btn-default">ADD
+                            <button id="addBtn" type="submit" ng-hide="isCaptureMode" ng-disabled="isSubpageExists" class="btn btn-default">ADD
                                 SUBPAGE
                             </button>
-                            <button id="captBtn" ng-click="captureSubpage(subpageUrl)" ng-show="isCaptureMode" ng-disabled="isSubpageExists" class="btn btn-default">ADD
+                            <button id="captBtn" type = "reset" ng-click="captureSubpage(subpageUrl)" ng-show="isCaptureMode" ng-disabled="isSubpageExists" class="btn btn-default">ADD
                                 SUBPAGE
                             </button>
                         </form>

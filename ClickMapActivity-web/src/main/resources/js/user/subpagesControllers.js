@@ -3,19 +3,21 @@
  */
 var SubpagesControllers = angular.module('SubpagesControllers', []);
 
-SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route', '$timeout', '$location', '$routeParams', 'SubpagesService', 'WebsitesService', 'WebsitesServiceRepo',
-    function ($scope, $http, $route, $timeout, $location, $routeParams, SubpagesService, WebsitesService, WebsitesServiceRepo) {
+SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route', '$timeout', '$location', '$routeParams', 'SubpagesService', 'WebsitesService', 'WebsitesServiceRepo','toaster',
+    function ($scope, $http, $route, $timeout, $location, $routeParams, SubpagesService, WebsitesService, WebsitesServiceRepo, toaster) {
         $scope.shouldShow = true;
         $scope.subpages = {};
         $scope.isSubpageExists = false;
         $scope.isCaptureMode = false;
         $scope.websiteUrl = window.location.href.split("/subpages/")[1];
         $scope.isFileLoaded = false;
+        $scope.isFileChoosed = false;
         $scope.imgName = {};
         $scope.displays = {};
         $scope.dateTo = moment().format("YYYY-MM-DD HH:mm:ss");
         $scope.dateFrom = moment().subtract(7, 'days').format("YYYY-MM-DD HH:mm:ss");
         $scope.granulation = {};
+        $scope.subpageUrl = "";
         $scope.granulationTypes = ["day","hour"];
         $scope.data = {};
 
@@ -49,39 +51,6 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
                 color: ['#7a43b6']
             }
         };
-
-        function generateData() {
-            return stream_layers(1,100+Math.random()*50,.1).map(function(data, i) {
-                console.info(data);
-                return {
-                    key: 'Stream',
-                    values: data
-                };
-            });
-        }
-
-        function stream_layers(n, m, o) {
-            if (arguments.length < 3) o = 0;
-            function bump(a) {
-                var x = 1 / (.1 + Math.random()),
-                    y = 2 * Math.random() - .5,
-                    z = 10 / (.1 + Math.random());
-                for (var i = 0; i < m; i++) {
-                    var w = (i / m - y) * z;
-                    a[i] += x * Math.exp(-w * w);
-                }
-            }
-            return d3.range(n).map(function() {
-                var a = [], i;
-                for (i = 0; i < m; i++) a[i] = o + o * Math.random();
-                for (i = 0; i < 5; i++) bump(a);
-                return a.map(stream_index);
-            });
-        }
-
-        function stream_index(d, i) {
-            return {x: i, y: Math.max(0, d)};
-        }
 
         SubpagesService.getByWebsiteId(function (subpages) {
             $scope.subpages = subpages;
@@ -179,10 +148,26 @@ SubpagesControllers.controller('SubpagesController', ['$scope', '$http', '$route
                     console.error('error fetchin response with chart data.');
                 });
         };
-        
+
+        $scope.setCaptureMode = function () {
+            $scope.isCaptureMode = $scope.subpageUrl.length > 0;
+        };
+
         $scope.captureSubpage = function (url) {
-            console.info("Worked!")
-            SubpagesService.captureSubpage({subpageUrl: url})
+            toaster.pop({
+                type: 'success',
+                title: 'Please wait.',
+                body: 'Your subpage will be added in less than minute.'
+            });
+            SubpagesService.captureSubpage({subpageName: $scope.subpageName , subpageUrl: url}, function (rsp) {
+                if(!rsp.value) {
+                    toaster.pop({
+                        type: 'warning',
+                        title: 'Addding subpage failed',
+                        body: 'Please try again.'
+                    });
+                }
+            });
         };
         
         function _arrayBufferToBase64(buffer) {

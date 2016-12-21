@@ -56,59 +56,59 @@ public class SubpageService extends AbstractService<Subpage, SubpageDTO, Subpage
     @Autowired
     PointsService pointsService;
 
-    public boolean saveSubpage(String name, MultipartFile file, RedirectAttributes redAttr) {
+    public boolean saveSubpage(String name, MultipartFile file, InputStream stream, RedirectAttributes redAttr) {
         WebsiteDTO websiteDTO = (WebsiteDTO) cache.getRequestedWebsite();
-        if (!file.isEmpty() && websiteDTO != null) {
-            try {
+        try {
+            if (stream == null) {
+                stream = file.getInputStream();
+            }
+            if (websiteDTO != null) {
                 File f = new File("ClickMapActivity-web/src/main/resources/images/" + websiteDTO.getId());
                 if (!f.exists())
                     f.mkdirs();
                 f = new File("ClickMapActivity-web/src/main/resources/images/" + websiteDTO.getId() + "/" + name);
-                SubpageDTO subpageDTO = new SubpageDTO();
-                BufferedImage img = ImageIO.read(file.getInputStream());
-                img = ImageConverter.grayScale(img);
-                ImageIO.write(img, "png", f);
-                subpageDTO.setName(name);
-                subpageDTO.setResX(img.getWidth());
-                subpageDTO.setResY(img.getHeight());
-                subpageDTO.setWebsiteId(((WebsiteDTO) cache.getRequestedWebsite()).getId());
-                subpageDTO = mapper.convertToDTO(repo.save(mapper.convertToDAO(subpageDTO)));
-                cache.updateWebsiteSubpage(websiteDTO.getId(), subpageDTO.getId(), subpageDTO);
+                processSubpage(name, websiteDTO, f, stream);
                 redAttr.addAttribute("websiteUrl", websiteDTO.getUrl());
                 return true;
-            } catch (IOException e) {
-                LOGGER.warn(e.getMessage());
-                redAttr.addFlashAttribute("message", "Could not upload subpage. Please try again.");
-                return false;
             }
+        } catch (IOException e) {
+            LOGGER.warn(e.getMessage());
+            redAttr.addFlashAttribute("message", "Could not upload subpage. Please try again.");
+            return false;
         }
         redAttr.addFlashAttribute("message", "Could not upload subpage. Please try again.");
         return false;
     }
 
-    public boolean captureSubpage(String subpageUrl, RedirectAttributes redAttrs) {
+    private void processSubpage(String name, WebsiteDTO websiteDTO, File f, InputStream stream) throws IOException {
+        SubpageDTO subpageDTO = new SubpageDTO();
+        BufferedImage img = ImageIO.read(stream);
+        img = ImageConverter.grayScale(img);
+        ImageIO.write(img, "png", f);
+        subpageDTO.setName(name);
+        subpageDTO.setResX(img.getWidth());
+        subpageDTO.setResY(img.getHeight());
+        subpageDTO.setWebsiteId(((WebsiteDTO) cache.getRequestedWebsite()).getId());
+        subpageDTO = mapper.convertToDTO(repo.save(mapper.convertToDAO(subpageDTO)));
+        cache.updateWebsiteSubpage(websiteDTO.getId(), subpageDTO.getId(), subpageDTO);
+    }
+
+    public boolean captureSubpage(String name, String subpageUrl, RedirectAttributes redAttrs) {
+        if (!subpageUrl.startsWith("http://")) {
+            subpageUrl = "http://" + subpageUrl;
+        }
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(
                 new ByteArrayHttpMessageConverter());
-
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
-
         HttpEntity<String> entity = new HttpEntity<>(headers);
-
         ResponseEntity<byte[]> response = restTemplate.exchange(
                 "http://api.screenshotmachine.com/?key=573ab4&size=F&format=PNG&url=" + subpageUrl,
                 HttpMethod.GET, entity, byte[].class, "1");
-
         if (response.getStatusCode() == HttpStatus.OK) {
-            try {
-                Files.write(Paths.get("ClickMapActivity-web/src/main/resources/images/test.png"), response.getBody());
-                return true;
-            } catch (IOException e) {
-                LOGGER.warn(e.getMessage());
-                redAttrs.addFlashAttribute("message", "Could not upload subpage. Please try again.");
-                return false;
-            }
+                InputStream stream = new ByteArrayInputStream(response.getBody());
+                return saveSubpage(name, null, stream, redAttrs);
         }
         return false;
     }
@@ -176,6 +176,9 @@ public class SubpageService extends AbstractService<Subpage, SubpageDTO, Subpage
         Collection<ActivityDTO> activities = (Collection) cache.getSubpageActivities(subpage.getId());
         final LocalDateTime dateFrom = LocalDateTime.parse(dateFromChain.substring(0, dateFromChain.length() - 6), DateTimeFormatter.ofPattern("yyyy-MM-dd kk"));
         final LocalDateTime dateTo = LocalDateTime.parse(dateToChain.substring(0, dateFromChain.length() - 6), DateTimeFormatter.ofPattern("yyyy-MM-dd kk"));
+        if(activities == null) {
+            return Collections.EMPTY_LIST;
+        }
         Map<LocalDateTime, Long> periodOccurances = activities.stream()
                 .filter(a -> a.getDate().isAfter(dateFrom) && a.getDate().isBefore(dateTo))
                 .map(a -> LocalDateTime.parse(a.getDate().toString().replace("T", " ").substring(0, a.getDate().toString().length() - (a.getDate().toString().length() > 16 ? 6 : 3)), DateTimeFormatter.ofPattern("yyyy-MM-dd kk")))
@@ -208,6 +211,9 @@ public class SubpageService extends AbstractService<Subpage, SubpageDTO, Subpage
         Collection<ActivityDTO> activities = (Collection) cache.getSubpageActivities(subpage.getId());
         final LocalDateTime dateFrom = LocalDateTime.parse(dateFromChain.replace(" ", "T"));
         final LocalDateTime dateTo = LocalDateTime.parse(dateToChain.replace(" ", "T"));
+        if(activities == null) {
+            return Collections.EMPTY_LIST;
+        }
         Map<LocalDate, Long> periodOccurances = activities.stream()
                 .filter(a -> a.getDate().isAfter(dateFrom) && a.getDate().isBefore(dateTo))
                 .collect(Collectors.groupingBy(a -> a.getDate().toLocalDate(), Collectors.counting()));

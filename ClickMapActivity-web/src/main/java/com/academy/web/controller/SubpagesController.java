@@ -34,7 +34,7 @@ public class SubpagesController extends AbstractController<Subpage, SubpageDTO, 
     public ModelAndView addSubpage(@RequestParam("file") MultipartFile file,
                                    @RequestParam("subpageName") String name,
                                    RedirectAttributes redAttr) {
-        return new ModelAndView(service.saveSubpage(name, file, redAttr) ?
+        return new ModelAndView(service.saveSubpage(name, file, null, redAttr) ?
                 "redirect:/user/#/subpages/{websiteUrl}"
                 : RedirectUrls.ERROR_COULD_NOT_UPLOAD_SUBPAGE);
     }
@@ -45,12 +45,11 @@ public class SubpagesController extends AbstractController<Subpage, SubpageDTO, 
         return cache.getWebsiteSubpages(website.getId());
     }
 
-    @RequestMapping(value = "/capture/{subpageUrl:.+}", method = RequestMethod.POST)
-    public ModelAndView captureSubpage(@PathVariable String subpageUrl,
+    @RequestMapping(value = "/capture/{subpageName}/{subpageUrl:.+}", method = RequestMethod.POST)
+    public ValueWrapper<Boolean> captureSubpage(@PathVariable String subpageUrl,
+                                       @PathVariable String subpageName,
                                        RedirectAttributes redAttrs) {
-        return new ModelAndView(service.captureSubpage(subpageUrl, redAttrs) ?
-                "redirect:/user/#/subpages/{websiteUrl}"
-                : RedirectUrls.ERROR_COULD_NOT_UPLOAD_SUBPAGE);
+        return new ValueWrapper<>(service.captureSubpage(subpageName, subpageUrl, redAttrs));
     }
 
     @RequestMapping(value = "/images/get", method = RequestMethod.GET)

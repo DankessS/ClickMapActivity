@@ -14,9 +14,10 @@ SubpagesServices.factory('SubpagesService', [
             },
 
             captureSubpage: {
-                url: '/subpages/capture/:subpageUrl',
+                url: '/subpages/capture/:subpageName/:subpageUrl',
                 method: 'POST',
-                params: {subpageUrl: "@subpageUrl"}
+                params: {subpageUrl: "@subpageUrl",
+                         subpageName: "@subpageName"}
             },
 
             getChartData: {
