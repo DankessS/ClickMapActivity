@@ -12,17 +12,7 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
-apply plugin: 'war'
-apply plugin: 'java'
 apply plugin: 'spring-boot'
-apply plugin: 'idea'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
 
 springBoot {
     mainClass = "ClickMapActivity-web.src.main.java.com.academy.Application"
@@ -32,12 +22,17 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-tomcat")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile project (':ClickMapActivity-cache')
+    compile project (':ClickMapActivity-model')
+    compile project (':ClickMapActivity-repo')
+    compile project (':ClickMapActivity-service')
+    compile project (':ClickMapActivity-web')
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
-subprojects {
+allprojects {
     apply plugin: 'java'
-    apply plugin: 'spring-boot'
+    apply plugin: 'idea'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -45,6 +40,11 @@ subprojects {
     repositories {
         mavenCentral()
     }
+}
+
+subprojects {
+
+    apply plugin: 'spring-boot'
 
     dependencies {
         compile("org.springframework.boot:spring-boot-starter-web") {
